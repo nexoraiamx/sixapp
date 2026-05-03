@@ -1,0 +1,628 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --mag:#9B1B6E;--mag-l:#C73D96;--mag-p:#F5E6F0;--mag-p2:#EDD5E6;
+  --grn:#1A6B3C;--grn-l:#2D9B5A;--grn-p:#E6F5ED;
+  --gld:#8B6400;--gld-p:#FDF6E3;--gld-m:#B8860B;
+  --blu:#185FA5;--blu-p:#E6F1FB;
+  --brd:var(--color-border-tertiary);
+  --bg:var(--color-background-secondary);
+  --card:var(--color-background-primary);
+  --txt:var(--color-text-primary);
+  --txt2:var(--color-text-secondary);
+  --txt3:var(--color-text-tertiary);
+}
+body{font-family:var(--font-sans,sans-serif);color:var(--txt);background:transparent}
+
+.screen{display:none}
+.screen.on{display:block}
+
+.hero{background:var(--mag);color:#fff;padding:2rem 1.5rem 1.75rem;text-align:center;border-radius:0 0 20px 20px}
+.brand{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;opacity:0.65;margin-bottom:8px}
+.hero-title{font-size:32px;font-weight:500;line-height:1.1;margin-bottom:6px;font-family:var(--font-serif,serif)}
+.hero-sub{font-size:13px;opacity:0.72;margin-bottom:1.5rem}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.5rem}
+.hstat{background:rgba(255,255,255,0.12);border-radius:10px;padding:10px 8px;text-align:center}
+.hstat-n{font-size:22px;font-weight:500}
+.hstat-l{font-size:10px;opacity:0.7;margin-top:2px}
+.hero-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hnav-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;padding:14px 12px;text-align:left;cursor:pointer;color:#fff;transition:background 0.15s}
+.hnav-btn:hover{background:rgba(255,255,255,0.22)}
+.hnav-icon{font-size:20px;margin-bottom:6px}
+.hnav-title{font-size:13px;font-weight:500}
+.hnav-sub{font-size:11px;opacity:0.65;margin-top:2px}
+.hnav-btn.full{grid-column:1/-1}
+
+.topbar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:0.5px solid var(--brd);background:var(--card)}
+.back-btn{background:none;border:none;cursor:pointer;color:var(--txt2);font-size:13px;display:flex;align-items:center;gap:4px;padding:0}
+.topbar-title{font-size:14px;font-weight:500;flex:1;text-align:center}
+.topbar-badge{font-size:10px;background:var(--mag-p);color:var(--mag);padding:3px 9px;border-radius:20px;font-weight:500}
+
+.pad{padding:1rem}
+
+.prog-card{background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.prog-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.prog-pct{font-size:32px;font-weight:500;color:var(--mag);line-height:1}
+.prog-lbl{font-size:12px;color:var(--txt2);margin-top:4px}
+.prog-phrase{font-size:12px;color:var(--txt2);text-align:right;max-width:160px;line-height:1.4}
+.prog-bar-wrap{background:var(--bg);border-radius:20px;height:8px;overflow:hidden;margin-bottom:8px}
+.prog-bar-fill{height:100%;border-radius:20px;background:var(--mag);transition:width 0.5s ease}
+.prog-mini{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;margin-top:12px}
+.prog-dot{height:20px;border-radius:4px;background:var(--bg)}
+.prog-dot.done{background:var(--mag)}
+.prog-dot.partial{background:var(--mag-p2)}
+
+.week-hdr{display:flex;align-items:center;gap:8px;margin:1rem 0 8px}
+.wk-pill{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;color:#fff;background:var(--mag)}
+.wk-pill.s2{background:var(--grn)}
+.wk-sub{font-size:12px;color:var(--txt3)}
+
+.day-row{background:var(--card);border:0.5px solid var(--brd);border-radius:10px;margin-bottom:6px;overflow:hidden}
+.day-hdr{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+.day-hdr:hover{background:var(--bg)}
+.day-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff;background:var(--mag);flex-shrink:0}
+.day-num.s2{background:var(--grn)}
+.day-info{flex:1}
+.day-name{font-size:13px;font-weight:500}
+.day-preview{font-size:11px;color:var(--txt3);margin-top:1px}
+.day-right{display:flex;align-items:center;gap:8px}
+.day-status{font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px}
+.day-status.done{background:#EAF3DE;color:#27500A}
+.day-status.partial{background:#FDF6E3;color:#633806}
+.day-status.empty{background:var(--bg);color:var(--txt3)}
+.chev{font-size:11px;color:var(--txt3);transition:transform 0.2s}
+.day-body{display:none;border-top:0.5px solid var(--brd)}
+.day-body.open{display:block}
+
+.mono-msg{background:var(--gld-p);border-radius:0 0 10px 10px;padding:14px;text-align:center;font-size:13px;color:var(--gld)}
+
+.meal-section{padding:10px 12px;border-bottom:0.5px solid var(--brd)}
+.meal-section:last-child{border-bottom:none}
+.meal-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.meal-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:6px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap}
+.meal-tag.dp{background:var(--bg);color:var(--txt2)}
+.meal-tag.db{background:#FDF6E3;color:#633806}
+.meal-tag.co{background:#EAF3DE;color:#27500A}
+.meal-tag.ce{background:var(--mag-p);color:#72243E}
+.meal-txt{font-size:12.5px;color:var(--txt);line-height:1.5;flex:1}
+.check-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chk-btn{display:flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;border-radius:20px;border:0.5px solid var(--brd);background:var(--card);cursor:pointer;color:var(--txt2);transition:all 0.15s}
+.chk-btn.yes{background:#EAF3DE;border-color:#97C459;color:#27500A}
+.chk-btn.no{background:#FCEBEB;border-color:#F09595;color:#791F1F}
+.chk-dot{width:8px;height:8px;border-radius:50%;background:var(--brd);flex-shrink:0}
+.chk-btn.yes .chk-dot{background:#639922}
+.chk-btn.no .chk-dot{background:#E24B4A}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-card{background:var(--bg);border-radius:8px;padding:12px}
+.stat-n{font-size:24px;font-weight:500;color:var(--txt)}
+.stat-l{font-size:11px;color:var(--txt2);margin-top:2px}
+
+.week-prog{background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:12px}
+.wp-title{font-size:12px;font-weight:500;color:var(--txt2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em}
+.wp-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.wp-lbl{font-size:12px;color:var(--txt2);min-width:70px}
+.wp-bar-w{flex:1;background:var(--bg);border-radius:10px;height:10px;overflow:hidden}
+.wp-bar-f{height:100%;border-radius:10px;transition:width 0.4s}
+.wp-bar-f.s1{background:var(--mag)}
+.wp-bar-f.s2{background:var(--grn)}
+.wp-pct{font-size:11px;font-weight:500;min-width:30px;text-align:right}
+
+.streak-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.s-box{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;border:0.5px solid var(--brd);color:var(--txt3);background:var(--bg)}
+.s-box.done{background:var(--mag);color:#fff;border-color:var(--mag)}
+.s-box.partial{background:var(--mag-p2);color:var(--mag);border-color:var(--mag-p)}
+.s-box.grn{background:var(--grn);color:#fff;border-color:var(--grn)}
+.s-box.grn-p{background:#C0DD97;color:#27500A;border-color:#97C459}
+
+.tip-row{display:flex;gap:8px;margin-bottom:8px}
+.tip-card{flex:1;border-radius:10px;padding:10px 12px}
+.tip-card.mag{background:var(--mag-p);border:0.5px solid var(--mag-p2)}
+.tip-card.grn{background:var(--grn-p);border:0.5px solid #9FE1CB}
+.tip-t{font-size:11px;font-weight:500;margin-bottom:3px}
+.tip-t.mag{color:#72243E}
+.tip-t.grn{color:#085041}
+.tip-b{font-size:11.5px;color:var(--txt2);line-height:1.4}
+
+.shop-sec{margin-bottom:1rem}
+.shop-hdr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px}
+.shop-hdr.m{background:var(--grn-p)}
+.shop-hdr.s{background:var(--blu-p)}
+.shop-hdr.p{background:var(--gld-p)}
+.shop-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.shop-icon.m{background:var(--grn-l);color:#fff}
+.shop-icon.s{background:var(--blu);color:#fff}
+.shop-icon.p{background:var(--gld-m);color:#fff}
+.shop-name{font-size:13px;font-weight:500}
+.shop-name.m{color:var(--grn)}
+.shop-name.s{color:var(--blu)}
+.shop-name.p{color:var(--gld)}
+.shop-cnt{font-size:11px;color:var(--txt3);margin-left:auto}
+.cat-lbl{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt3);margin:0 0 5px 4px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.chip{display:flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;border-radius:20px;border:0.5px solid var(--brd);background:var(--card);cursor:pointer;color:var(--txt);transition:all 0.15s}
+.chip.got{background:var(--mag-p);border-color:var(--mag-l);color:#72243E;text-decoration:line-through;opacity:0.7}
+.chip-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--brd);flex-shrink:0}
+.chip.got .chip-dot{background:var(--mag);border-color:var(--mag)}
+.shop-prog{background:var(--bg);border-radius:20px;height:5px;overflow:hidden;margin:6px 0 12px}
+.shop-prog-f{height:100%;border-radius:20px;background:var(--mag);transition:width 0.4s}
+
+.snack-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.snack{background:var(--card);border:0.5px solid var(--brd);border-radius:10px;padding:12px}
+.snack-ico{font-size:20px;margin-bottom:6px}
+.snack-t{font-size:12.5px;color:var(--txt)}
+
+.ritual-box{background:var(--blu-p);border:0.5px solid #B5D4F4;border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.ritual-t{font-size:12px;font-weight:500;color:#0C447C;margin-bottom:4px}
+.ritual-b{font-size:12px;color:var(--txt2);line-height:1.5}
+</style>
+
+<div id="s-home" class="screen on">
+  <div class="hero">
+    <div class="brand">Six Power Wellness</div>
+    <div class="hero-title">Reto<br>Desintoxicación</div>
+    <div class="hero-sub">14 días · Desinflamar · Equilibrar · Sostener</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n" id="h-dias">0</div><div class="hstat-l">Días completados</div></div>
+      <div class="hstat"><div class="hstat-n" id="h-pct">0%</div><div class="hstat-l">Progreso total</div></div>
+      <div class="hstat"><div class="hstat-n" id="h-items">0</div><div class="hstat-l">Compras listas</div></div>
+    </div>
+    <div class="hero-nav">
+      <div class="hnav-btn" onclick="go('s-progreso')">
+        <div class="hnav-icon">📊</div>
+        <div class="hnav-title">Mi progreso</div>
+        <div class="hnav-sub">Ver estadísticas del reto</div>
+      </div>
+      <div class="hnav-btn" onclick="go('s-menu')">
+        <div class="hnav-icon">🥗</div>
+        <div class="hnav-title">Menú 14 días</div>
+        <div class="hnav-sub">Marcar comidas hechas</div>
+      </div>
+      <div class="hnav-btn" onclick="go('s-compras')">
+        <div class="hnav-icon">🛒</div>
+        <div class="hnav-title">Lista de compras</div>
+        <div class="hnav-sub">45 productos · 3 tiendas</div>
+      </div>
+      <div class="hnav-btn" onclick="go('s-colaciones')">
+        <div class="hnav-icon">🍎</div>
+        <div class="hnav-title">Colaciones</div>
+        <div class="hnav-sub">Opciones si hay hambre</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="s-progreso" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
+    <div class="topbar-title">Mi progreso</div>
+    <div class="topbar-badge" id="prog-badge">0%</div>
+  </div>
+  <div class="pad">
+    <div class="prog-card">
+      <div class="prog-top">
+        <div><div class="prog-pct" id="p-big-pct">0%</div><div class="prog-lbl">del reto completado</div></div>
+        <div class="prog-phrase" id="p-phrase">¡Empieza hoy tu transformación!</div>
+      </div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="p-bar" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt3);margin-top:4px"><span>Día 1</span><span>Día 14</span></div>
+      <div class="prog-mini" id="p-mini"></div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-n" id="ps-completos">0</div><div class="stat-l">Días completos</div></div>
+      <div class="stat-card"><div class="stat-n" id="ps-parciales">0</div><div class="stat-l">Días en progreso</div></div>
+      <div class="stat-card"><div class="stat-n" id="ps-comidas">0</div><div class="stat-l">Comidas realizadas</div></div>
+      <div class="stat-card"><div class="stat-n" id="ps-compras">0/45</div><div class="stat-l">Productos comprados</div></div>
+    </div>
+
+    <div class="week-prog">
+      <div class="wp-title">Por semana</div>
+      <div class="wp-row">
+        <div class="wp-lbl">Semana 1</div>
+        <div class="wp-bar-w"><div class="wp-bar-f s1" id="wp1" style="width:0%"></div></div>
+        <div class="wp-pct" id="wp1-p" style="color:var(--mag)">0%</div>
+      </div>
+      <div class="wp-row">
+        <div class="wp-lbl">Semana 2</div>
+        <div class="wp-bar-w"><div class="wp-bar-f s2" id="wp2" style="width:0%"></div></div>
+        <div class="wp-pct" id="wp2-p" style="color:var(--grn)">0%</div>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:12px">
+      <div class="wp-title">Tracker día a día</div>
+      <div class="streak-row" id="streak-row"></div>
+      <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2)"><div style="width:12px;height:12px;border-radius:3px;background:var(--mag)"></div>Semana 1 completo</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2)"><div style="width:12px;height:12px;border-radius:3px;background:var(--grn)"></div>Semana 2 completo</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2)"><div style="width:12px;height:12px;border-radius:3px;background:var(--mag-p2)"></div>Parcial</div>
+      </div>
+    </div>
+
+    <div class="tip-row">
+      <div class="tip-card mag"><div class="tip-t mag">Ritual diario</div><div class="tip-b">Agua tibia con limón al despertar, antes de cualquier alimento.</div></div>
+      <div class="tip-card grn"><div class="tip-t grn">Recuerda</div><div class="tip-b">Las colaciones son opcionales. Solo si hay hambre real.</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="s-menu" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
+    <div class="topbar-title">Menú 14 días</div>
+    <div class="topbar-badge" id="menu-badge">0 hechos</div>
+  </div>
+  <div class="pad" id="menu-list"></div>
+</div>
+
+<div id="s-compras" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
+    <div class="topbar-title">Lista de compras</div>
+    <div class="topbar-badge" id="shop-badge">0/45</div>
+  </div>
+  <div class="pad">
+    <div style="margin-bottom:10px">
+      <div class="shop-prog"><div class="shop-prog-f" id="shop-fill" style="width:0%"></div></div>
+      <div style="font-size:11px;color:var(--txt3);text-align:right" id="shop-lbl">0 de 45 productos</div>
+    </div>
+    <div id="shop-list"></div>
+    <button onclick="resetShop()" style="background:none;border:0.5px solid var(--brd);border-radius:8px;padding:7px 16px;font-size:12px;color:var(--txt2);cursor:pointer;display:block;margin:0 auto 1rem">Reiniciar lista</button>
+  </div>
+</div>
+
+<div id="s-colaciones" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
+    <div class="topbar-title">Colaciones y rituales</div>
+  </div>
+  <div class="pad">
+    <div class="ritual-box">
+      <div class="ritual-t">Ritual matutino · Al despertar</div>
+      <div class="ritual-b">Agua tibia con limón antes de cualquier alimento o bebida. Este hábito activa la digestión y apoya la desintoxicación.</div>
+    </div>
+    <div style="font-size:12px;font-weight:500;color:var(--txt2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Opciones de colaciones (si hay hambre)</div>
+    <div class="snack-grid">
+      <div class="snack"><div class="snack-ico" style="font-size:20px">🍌</div><div class="snack-t">Pan de plátano y semillas</div></div>
+      <div class="snack"><div class="snack-ico" style="font-size:20px">🍓</div><div class="snack-t">Ensalada de frutas con chamoy</div></div>
+      <div class="snack"><div class="snack-ico" style="font-size:20px">🫧</div><div class="snack-t">Kombucha</div></div>
+      <div class="snack"><div class="snack-ico" style="font-size:20px">🍦</div><div class="snack-t">Helado de yogurth griego con cacao</div></div>
+    </div>
+    <div class="ritual-box" style="margin-top:1rem;background:var(--grn-p);border-color:#9FE1CB">
+      <div class="ritual-t" style="color:#085041">Importante</div>
+      <div class="ritual-b">Las colaciones son <strong>opcionales</strong>. Consúmelas únicamente si sientes hambre real entre comidas, no por ansiedad o aburrimiento.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var state={meals:{},shop:{}};
+
+var menuData=[
+  {d:1,s:1,label:"Día 1",tag:"Mono dieta",mono:true,meals:[{t:"dp",tl:"Todo el día",text:"Pera y Manzana a libre demanda · Agua tibia con limón"}]},
+  {d:2,s:1,label:"Día 2",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Dos huevos a la mexicana · Aguacate · 2 tortillas nixtamalizado o pan de masa madre"},
+    {t:"co",tl:"Comida",text:"Crema de zanahoria sin lácteos · Pescado empapelado"},
+    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
+  ]},
+  {d:3,s:1,label:"Día 3",meals:[
+    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
+    {t:"db",tl:"Desayuno",text:"Avena overnight"},
+    {t:"co",tl:"Comida",text:"Ensalada de garbanzo o lentejas · Aguacate · 2 tostadas horneadas"},
+    {t:"ce",tl:"Cena",text:"Crema de zanahoria sin lácteos · Shot de kéfir · Té de diente de león"}
+  ]},
+  {d:4,s:1,label:"Día 4",meals:[
+    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
+    {t:"db",tl:"Desayuno",text:"Yogurth griego sin azúcar · Granola · Papaya o frutos rojos"},
+    {t:"co",tl:"Comida",text:"Ensalada fresca · Pescado empapelado"},
+    {t:"ce",tl:"Cena",text:"Nopales asados y frijoles de la olla · Té de diente de león"}
+  ]},
+  {d:5,s:1,label:"Día 5",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Avena overnight"},
+    {t:"co",tl:"Comida",text:"Frijoles de olla · Ensalada de nopales · Aguacate"},
+    {t:"ce",tl:"Cena",text:"Arroz Basmati · Verduras salteadas · Té de diente de León"}
+  ]},
+  {d:6,s:1,label:"Día 6",meals:[
+    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
+    {t:"db",tl:"Desayuno",text:"Dos huevos con espinacas · Nopales asados o verduras a la plancha · 2 tortillas o pan de masa madre"},
+    {t:"co",tl:"Comida",text:"Ensalada de garbanzo o lentejas · Aguacate · 2 tostadas horneadas"},
+    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
+  ]},
+  {d:7,s:1,label:"Día 7",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Hot cakes de avena y frutos rojos o Avena horneada"},
+    {t:"co",tl:"Comida",text:"Pescado al pastor · Ensalada fresca"},
+    {t:"ce",tl:"Cena",text:"Crema de zanahoria sin lácteos · Shot de kéfir · Té de diente de león"}
+  ]},
+  {d:8,s:2,label:"Día 8",meals:[
+    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
+    {t:"db",tl:"Desayuno",text:"Huevos turcos"},
+    {t:"co",tl:"Comida",text:"Calabazas rellenas de pollo en salsa verde · Ensalada fresca"},
+    {t:"ce",tl:"Cena",text:"Crema de verduras sin lácteos"}
+  ]},
+  {d:9,s:2,label:"Día 9",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Toast de espinacas"},
+    {t:"co",tl:"Comida",text:"Albóndigas con verduras · Ensalada fresca"},
+    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
+  ]},
+  {d:10,s:2,label:"Día 10",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Bowl abundante de frutos rojos"},
+    {t:"co",tl:"Comida",text:"Ensalada de pollo · Aguacate · Dos tostadas horneadas"},
+    {t:"ce",tl:"Cena",text:"Arroz Basmati con lentejas · Té de manzanilla"}
+  ]},
+  {d:11,s:2,label:"Día 11",meals:[
+    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
+    {t:"db",tl:"Desayuno",text:"Dos huevos con espinacas · Nopales asados · 2 tortillas o pan de masa madre"},
+    {t:"co",tl:"Comida",text:"Crema de verduras sin lácteos · Lasaña de calabaza"},
+    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
+  ]},
+  {d:12,s:2,label:"Día 12",meals:[
+    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
+    {t:"db",tl:"Desayuno",text:"Hot cakes de avena y frutos rojos o Avena horneada"},
+    {t:"co",tl:"Comida",text:"Ensalada griega"},
+    {t:"ce",tl:"Cena",text:"Crema de verduras sin lácteos · Té de manzanilla"}
+  ]},
+  {d:13,s:2,label:"Día 13",tag:"Día libre",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Huevos divorciados sobre nopal asado · Aguacate"},
+    {t:"co",tl:"Comida",text:"Día Libre 🎉"},
+    {t:"ce",tl:"Cena",text:"Pizza casera de vegetales"}
+  ]},
+  {d:14,s:2,label:"Día 14",tag:"Último día",meals:[
+    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
+    {t:"db",tl:"Desayuno",text:"Bowl abundante de frutos rojos"},
+    {t:"co",tl:"Comida",text:"Aguacate relleno de ensalada de pollo"},
+    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
+  ]}
+];
+
+var shopData=[
+  {store:"Mercadito",cls:"m",icon:"🌿",cats:[
+    {name:"Frutas",items:["Mix de frutos rojos","Papaya","Manzana","Pera","Aguacate","Limón"]},
+    {name:"Verduras",items:["Espinacas","Jitomate cherry","Pepino persa","Calabaza","Zanahoria","Chayote","Jitomate","Cebolla morada","Mix de lechugas","Tortillas de maíz nixtamalizado"]}
+  ]},
+  {store:"Supermercado",cls:"s",icon:"🏪",cats:[
+    {name:"Proteínas",items:["Yogurth griego sin azúcar","Jocoque seco o requesón","Carne molida","Pescado","Pechuga de pollo","Huevo orgánico"]},
+    {name:"Semillas y granos",items:["Garbanzos","Lentejas","Arroz Basmati","Avena sin glutén","Chía","Mix de semillas","Frijoles","Nopales cambray"]},
+    {name:"Grasas",items:["Aceite de aguacate o coco","Aceite de olivo"]},
+    {name:"Carbohidratos",items:["Tostadas horneadas"]},
+    {name:"Fermentos y bebidas",items:["Kéfir","Bebida vegetal (coco/almendra)"]},
+    {name:"Tés",items:["Té de diente de león","Té de manzanilla"]},
+    {name:"Condimentos",items:["Sal de mar o himalaya","Canela en polvo","Vainilla","Endulzante natural","Vinagre de manzana orgánico"]},
+    {name:"Suplementos",items:["Caldo de huesos","Clorofila"]}
+  ]},
+  {store:"Panadería artesanal",cls:"p",icon:"🍞",cats:[
+    {name:"Pan fermentado",items:["Pan de masa madre"]}
+  ]}
+];
+
+var phrases=["¡Empieza hoy tu transformación!","¡Buen comienzo, sigue así!","¡Vas muy bien, no te detengas!","¡Estás en racha, increíble!","¡Más de la mitad, eres imparable!","¡Casi terminas, qué orgullo!","¡Reto completado! Eres Six Power 💪"];
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if(id==='s-progreso')renderProgress();
+  if(id==='s-menu')renderMenu();
+  if(id==='s-compras')renderShop();
+  updateHome();
+}
+
+function getMealKey(d,mi){return 'd'+d+'m'+mi}
+function getShopKey(item){return 'sh_'+item.replace(/\s/g,'_')}
+
+function getDayStatus(d){
+  var day=menuData.find(x=>x.d===d);
+  if(!day)return'empty';
+  if(day.mono){var v=state.meals[getMealKey(d,0)];return v==='yes'?'done':v==='no'?'no':'empty'}
+  var total=day.meals.length,done=0,nope=0;
+  day.meals.forEach(function(m,i){var v=state.meals[getMealKey(d,i)];if(v==='yes')done++;else if(v==='no')nope++;});
+  if(done===total)return'done';
+  if(done>0||nope>0)return'partial';
+  return'empty';
+}
+
+function countDone(){return menuData.filter(d=>getDayStatus(d.d)==='done').length}
+function countPartial(){return menuData.filter(d=>getDayStatus(d.d)==='partial').length}
+function countMeals(){var n=0;Object.values(state.meals).forEach(v=>{if(v==='yes')n++});return n}
+function countShop(){return Object.values(state.shop).filter(v=>v).length}
+function totalMeals(){var n=0;menuData.forEach(d=>{n+=d.meals.length});return n}
+
+function calcPct(){
+  var mp=countMeals()/totalMeals()*70;
+  var sp=countShop()/45*30;
+  return Math.round(mp+sp);
+}
+
+function updateHome(){
+  var pct=calcPct();
+  document.getElementById('h-dias').textContent=countDone();
+  document.getElementById('h-pct').textContent=pct+'%';
+  document.getElementById('h-items').textContent=countShop();
+}
+
+function renderProgress(){
+  var pct=calcPct();
+  var done=countDone(),partial=countPartial();
+  var pi=Math.min(Math.floor(pct/100*6),6);
+  document.getElementById('p-big-pct').textContent=pct+'%';
+  document.getElementById('prog-badge').textContent=pct+'%';
+  document.getElementById('p-bar').style.width=pct+'%';
+  document.getElementById('p-phrase').textContent=phrases[pi];
+  document.getElementById('ps-completos').textContent=done;
+  document.getElementById('ps-parciales').textContent=partial;
+  document.getElementById('ps-comidas').textContent=countMeals();
+  document.getElementById('ps-compras').textContent=countShop()+'/45';
+
+  var s1meals=0,s1done=0,s2meals=0,s2done=0;
+  menuData.forEach(function(d){
+    d.meals.forEach(function(m,i){
+      var v=state.meals[getMealKey(d.d,i)];
+      if(d.s===1){s1meals++;if(v==='yes')s1done++;}
+      else{s2meals++;if(v==='yes')s2done++;}
+    });
+  });
+  var p1=s1meals?Math.round(s1done/s1meals*100):0;
+  var p2=s2meals?Math.round(s2done/s2meals*100):0;
+  document.getElementById('wp1').style.width=p1+'%';
+  document.getElementById('wp2').style.width=p2+'%';
+  document.getElementById('wp1-p').textContent=p1+'%';
+  document.getElementById('wp2-p').textContent=p2+'%';
+
+  var sr=document.getElementById('streak-row');
+  sr.innerHTML='';
+  menuData.forEach(function(d){
+    var st=getDayStatus(d.d);
+    var cls=st==='done'?(d.s===1?'done':'grn'):st==='partial'?(d.s===1?'partial':'grn-p'):'';
+    var box=document.createElement('div');
+    box.className='s-box '+cls;
+    box.textContent=d.d;
+    sr.appendChild(box);
+  });
+
+  var mini=document.getElementById('p-mini');
+  mini.innerHTML='';
+  menuData.forEach(function(d){
+    var st=getDayStatus(d.d);
+    var dot=document.createElement('div');
+    dot.className='prog-dot'+(st==='done'?' done':st==='partial'?' partial':'');
+    mini.appendChild(dot);
+  });
+}
+
+function renderMenu(){
+  var list=document.getElementById('menu-list');
+  list.innerHTML='';
+  var s1=document.createElement('div');s1.innerHTML='<div class="week-hdr"><span class="wk-pill">Semana 1</span><span class="wk-sub">Desinflamar · Días 1–7</span></div>';
+  list.appendChild(s1);
+  menuData.forEach(function(day){
+    if(day.d===8){var s2=document.createElement('div');s2.innerHTML='<div class="week-hdr"><span class="wk-pill s2">Semana 2</span><span class="wk-sub">Equilibrar y Sostener · Días 8–14</span></div>';list.appendChild(s2);}
+    var st=getDayStatus(day.d);
+    var stLabel=st==='done'?'Completado':st==='partial'?'En progreso':'Pendiente';
+    var stCls=st==='done'?'done':st==='partial'?'partial':'empty';
+    var preview=day.mono?'Mono dieta: Pera y Manzana':day.meals.find(m=>m.t==='db')?.text||'';
+    var row=document.createElement('div');row.className='day-row';
+    var numCls=day.s===2?'day-num s2':'day-num';
+    var tagHtml=day.tag?'<div style="font-size:10px;padding:2px 8px;border-radius:10px;background:#FDF6E3;color:#633806">'+day.tag+'</div>':'';
+    row.innerHTML='<div class="day-hdr" onclick="toggleDay(this,'+day.d+')"><div class="'+numCls+'">'+day.d+'</div><div class="day-info"><div class="day-name">'+day.label+'</div><div class="day-preview">'+preview.substring(0,50)+(preview.length>50?'…':'')+'</div></div><div class="day-right">'+tagHtml+'<div class="day-status '+stCls+'">'+stLabel+'</div><div class="chev">▼</div></div></div><div class="day-body" id="body-'+day.d+'"></div>';
+    list.appendChild(row);
+  });
+  updateMenuBadge();
+}
+
+function toggleDay(hdr,dayNum){
+  var body=document.getElementById('body-'+dayNum);
+  var chev=hdr.querySelector('.chev');
+  var isOpen=body.classList.contains('open');
+  if(!isOpen){
+    buildDayBody(dayNum,body);
+    body.classList.add('open');
+    chev.style.transform='rotate(180deg)';
+  } else {
+    body.classList.remove('open');
+    chev.style.transform='';
+  }
+}
+
+function buildDayBody(dayNum,body){
+  var day=menuData.find(d=>d.d===dayNum);
+  body.innerHTML='';
+  if(day.mono){
+    var v=state.meals[getMealKey(dayNum,0)]||'';
+    body.innerHTML='<div class="mono-msg">Todo el día: Pera y Manzana a libre demanda<br><small style="opacity:0.7">+ Agua tibia con limón al despertar</small></div><div style="padding:10px 12px"><div class="check-row"><button class="chk-btn'+(v==='yes'?' yes':'')+'" onclick="setMeal('+dayNum+',0,\'yes\',this,'+dayNum+')"><span class="chk-dot"></span>Lo hice</button><button class="chk-btn'+(v==='no'?' no':'')+'" onclick="setMeal('+dayNum+',0,\'no\',this,'+dayNum+')"><span class="chk-dot"></span>No lo hice</button></div></div>';
+    return;
+  }
+  day.meals.forEach(function(m,i){
+    var v=state.meals[getMealKey(dayNum,i)]||'';
+    var sec=document.createElement('div');
+    sec.className='meal-section';
+    sec.id='meal-sec-'+dayNum+'-'+i;
+    sec.innerHTML='<div class="meal-top"><div class="meal-tag '+m.t+'">'+m.tl+'</div><div class="meal-txt">'+m.text+'</div></div><div class="check-row"><button class="chk-btn'+(v==='yes'?' yes':'')+'" onclick="setMeal('+dayNum+','+i+',\'yes\',this,'+dayNum+')"><span class="chk-dot"></span>Lo hice</button><button class="chk-btn'+(v==='no'?' no':'')+'" onclick="setMeal('+dayNum+','+i+',\'no\',this,'+dayNum+')"><span class="chk-dot"></span>No lo hice</button></div>';
+    body.appendChild(sec);
+  });
+}
+
+function setMeal(dayNum,mealIdx,val,btn,d){
+  var key=getMealKey(dayNum,mealIdx);
+  state.meals[key]=state.meals[key]===val?null:val;
+  var sec=document.getElementById('meal-sec-'+dayNum+'-'+mealIdx)||btn.closest('.day-body');
+  var btns=btn.parentElement.querySelectorAll('.chk-btn');
+  btns.forEach(function(b){b.classList.remove('yes','no')});
+  if(state.meals[key])btn.classList.add(val);
+  updateMenuBadge();
+  updateDayStatus(dayNum);
+  updateHome();
+}
+
+function updateDayStatus(dayNum){
+  var st=getDayStatus(dayNum);
+  var stLabel=st==='done'?'Completado':st==='partial'?'En progreso':'Pendiente';
+  var stCls=st==='done'?'done':st==='partial'?'partial':'empty';
+  var allRows=document.querySelectorAll('.day-row');
+  allRows.forEach(function(row){
+    var hdr=row.querySelector('.day-hdr');
+    if(hdr&&hdr.getAttribute('onclick')&&hdr.getAttribute('onclick').includes(','+dayNum+')')){
+      var badge=hdr.querySelector('.day-status');
+      if(badge){badge.className='day-status '+stCls;badge.textContent=stLabel;}
+    }
+  });
+}
+
+function updateMenuBadge(){
+  document.getElementById('menu-badge').textContent=countMeals()+' hechos';
+}
+
+function renderShop(){
+  var list=document.getElementById('shop-list');
+  list.innerHTML='';
+  shopData.forEach(function(store){
+    var sec=document.createElement('div');
+    sec.className='shop-sec';
+    var totalItems=store.cats.reduce((a,c)=>a+c.items.length,0);
+    var gotItems=store.cats.reduce((a,c)=>a+c.items.filter(it=>state.shop[getShopKey(it)]).length,0);
+    var storePct=totalItems?Math.round(gotItems/totalItems*100):0;
+    var h='<div class="shop-hdr '+store.cls+'"><div class="shop-icon '+store.cls+'" style="font-size:16px">'+store.icon+'</div><div><div class="shop-name '+store.cls+'">'+store.store+'</div><div style="font-size:11px;color:var(--txt2)">'+gotItems+'/'+totalItems+' productos</div></div><div class="shop-cnt">'+storePct+'%</div></div>';
+    h+='<div class="shop-prog"><div class="shop-prog-f" style="width:'+storePct+'%;background:'+(store.cls==='m'?'var(--grn)':store.cls==='s'?'var(--blu)':'var(--gld-m)')+'"></div></div>';
+    store.cats.forEach(function(cat){
+      h+='<div class="cat-lbl">'+cat.name+'</div><div class="chips">';
+      cat.items.forEach(function(item){
+        var k=getShopKey(item);
+        var got=state.shop[k]?'got':'';
+        h+='<div class="chip '+got+'" onclick="toggleShop(\''+k+'\',this)"><span class="chip-dot"></span>'+item+'</div>';
+      });
+      h+='</div>';
+    });
+    sec.innerHTML=h;
+    list.appendChild(sec);
+  });
+  updateShopProgress();
+}
+
+function toggleShop(key,chip){
+  state.shop[key]=!state.shop[key];
+  chip.classList.toggle('got',state.shop[key]);
+  updateShopProgress();
+  updateHome();
+}
+
+function updateShopProgress(){
+  var n=countShop();
+  var pct=Math.round(n/45*100);
+  document.getElementById('shop-fill').style.width=pct+'%';
+  document.getElementById('shop-lbl').textContent=n+' de 45 productos';
+  document.getElementById('shop-badge').textContent=n+'/45';
+}
+
+function resetShop(){
+  state.shop={};
+  renderShop();
+  updateHome();
+}
+
+updateHome();
+</script>
