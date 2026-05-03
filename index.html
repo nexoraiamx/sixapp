@@ -1,628 +1,1090 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Reto Desintoxicación · Six Power</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --mag:#9B1B6E;--mag-l:#C73D96;--mag-p:#F5E6F0;--mag-p2:#EDD5E6;
+  --mag:#9B1B6E;--mag-l:#C73D96;--mag-p:#F5E6F0;--mag-d:#EDD5E6;
   --grn:#1A6B3C;--grn-l:#2D9B5A;--grn-p:#E6F5ED;
-  --gld:#8B6400;--gld-p:#FDF6E3;--gld-m:#B8860B;
-  --blu:#185FA5;--blu-p:#E6F1FB;
-  --brd:var(--color-border-tertiary);
-  --bg:var(--color-background-secondary);
-  --card:var(--color-background-primary);
-  --txt:var(--color-text-primary);
-  --txt2:var(--color-text-secondary);
-  --txt3:var(--color-text-tertiary);
+  --gld:#7A5500;--gld-p:#FDF6E3;--gld-m:#B8860B;
+  --blu:#185FA5;--blu-p:#EBF3FB;
+  --dark:#0F0F0F;--card:#fff;--bg:#F7F4F1;--brd:#E8E0E5;
+  --txt:#1A1A1A;--txt2:#666;--txt3:#999;
+  --r:16px;--tap:48px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
 }
-body{font-family:var(--font-sans,sans-serif);color:var(--txt);background:transparent}
+@media(prefers-color-scheme:dark){
+  :root{--dark:#0F0F0F;--card:#1C1C1E;--bg:#111113;--brd:#2C2C2E;--txt:#F5F5F7;--txt2:#98989D;--txt3:#636366;--mag-p:#2D1020;--grn-p:#0D2018;--gld-p:#1F1500;--blu-p:#0A1E33}
+}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-.screen{display:none}
-.screen.on{display:block}
+/* ─── SCREENS ─── */
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.on{display:flex}
 
-.hero{background:var(--mag);color:#fff;padding:2rem 1.5rem 1.75rem;text-align:center;border-radius:0 0 20px 20px}
-.brand{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;opacity:0.65;margin-bottom:8px}
-.hero-title{font-size:32px;font-weight:500;line-height:1.1;margin-bottom:6px;font-family:var(--font-serif,serif)}
-.hero-sub{font-size:13px;opacity:0.72;margin-bottom:1.5rem}
-.hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.5rem}
-.hstat{background:rgba(255,255,255,0.12);border-radius:10px;padding:10px 8px;text-align:center}
-.hstat-n{font-size:22px;font-weight:500}
-.hstat-l{font-size:10px;opacity:0.7;margin-top:2px}
-.hero-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hnav-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;padding:14px 12px;text-align:left;cursor:pointer;color:#fff;transition:background 0.15s}
-.hnav-btn:hover{background:rgba(255,255,255,0.22)}
-.hnav-icon{font-size:20px;margin-bottom:6px}
-.hnav-title{font-size:13px;font-weight:500}
-.hnav-sub{font-size:11px;opacity:0.65;margin-top:2px}
-.hnav-btn.full{grid-column:1/-1}
+/* ─── LOGIN ─── */
+#s-login{background:var(--mag);justify-content:flex-end;position:relative;overflow:hidden}
+.login-bg{position:absolute;inset:0;overflow:hidden}
+.login-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.07)}
+.lc1{width:340px;height:340px;top:-80px;right:-80px}
+.lc2{width:240px;height:240px;bottom:200px;left:-60px}
+.lc3{width:160px;height:160px;top:180px;right:40px}
+.login-top{position:absolute;top:0;left:0;right:0;padding:60px 28px 0;color:#fff;text-align:left}
+.login-brand{font-size:10px;letter-spacing:0.35em;text-transform:uppercase;opacity:0.6;margin-bottom:10px;font-weight:500}
+.login-title{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:1.05;color:#fff}
+.login-sub{font-size:13px;opacity:0.65;margin-top:10px;line-height:1.5}
+.login-card{background:var(--card);border-radius:28px 28px 0 0;padding:28px 24px 40px;position:relative;z-index:2}
+.login-card h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--txt);margin-bottom:6px}
+.login-card p{font-size:13px;color:var(--txt2);margin-bottom:22px}
+.tabs-login{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:20px;gap:4px}
+.tl{flex:1;text-align:center;padding:8px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:var(--txt2);transition:all 0.2s}
+.tl.act{background:var(--card);color:var(--txt);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.inp-group{margin-bottom:14px}
+.inp-label{font-size:12px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;display:block}
+.inp{width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid var(--brd);background:var(--bg);font-size:15px;color:var(--txt);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.inp:focus{border-color:var(--mag)}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-primary{width:100%;padding:15px;border-radius:14px;border:none;background:var(--mag);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.15s;margin-top:6px}
+.btn-primary:active{opacity:0.8}
+.login-err{font-size:12px;color:#E24B4A;text-align:center;margin-top:8px;min-height:18px}
+.avatar-pick{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.av-opt{width:44px;height:44px;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--brd);background:var(--bg);transition:all 0.15s}
+.av-opt.sel{border-color:var(--mag);background:var(--mag-p)}
 
-.topbar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:0.5px solid var(--brd);background:var(--card)}
-.back-btn{background:none;border:none;cursor:pointer;color:var(--txt2);font-size:13px;display:flex;align-items:center;gap:4px;padding:0}
-.topbar-title{font-size:14px;font-weight:500;flex:1;text-align:center}
-.topbar-badge{font-size:10px;background:var(--mag-p);color:var(--mag);padding:3px 9px;border-radius:20px;font-weight:500}
+/* ─── HOME ─── */
+#s-home{background:var(--bg)}
+.home-hero{background:var(--mag);padding:calc(var(--safe-top)+20px) 18px 22px;border-radius:0 0 26px 26px;position:relative;overflow:hidden}
+.hh-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hh-c1{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06);top:-60px;right:-40px}
+.hh-c2{position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.04);bottom:-20px;left:-20px}
+.hh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:1}
+.hh-greet{color:rgba(255,255,255,0.75);font-size:13px;font-weight:400}
+.hh-name{color:#fff;font-size:18px;font-weight:700;margin-top:2px}
+.hh-avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid rgba(255,255,255,0.3);cursor:pointer;flex-shrink:0}
+.hh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1}
+.hs{background:rgba(255,255,255,0.12);border-radius:12px;padding:10px 6px;text-align:center}
+.hs-n{font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.5px}
+.hs-l{font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px}
+.home-scroll{flex:1;overflow-y:auto;padding:14px 14px 100px}
+.section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt3);margin:0 0 10px}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.qcard{background:var(--card);border-radius:18px;padding:16px;cursor:pointer;border:0.5px solid var(--brd);transition:transform 0.1s;position:relative;overflow:hidden}
+.qcard:active{transform:scale(0.97)}
+.qcard-img{width:100%;height:90px;border-radius:10px;object-fit:cover;margin-bottom:10px;background:var(--bg)}
+.qcard-ico{font-size:28px;margin-bottom:8px}
+.qcard-t{font-size:13px;font-weight:600;color:var(--txt)}
+.qcard-s{font-size:11px;color:var(--txt2);margin-top:2px}
+.qcard-badge{position:absolute;top:12px;right:12px;background:var(--mag);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
+.day-today{background:var(--card);border-radius:18px;border:0.5px solid var(--brd);overflow:hidden;margin-bottom:20px}
+.dt-header{background:var(--mag);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.dt-title{color:#fff;font-size:14px;font-weight:600}
+.dt-sub{color:rgba(255,255,255,0.7);font-size:11px}
+.dt-meals{padding:10px 0}
+.dt-row{display:flex;align-items:center;gap:12px;padding:9px 16px}
+.dt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dt-dot.ay{background:var(--txt3)}
+.dt-dot.de{background:var(--gld-m)}
+.dt-dot.co{background:var(--grn-l)}
+.dt-dot.ce{background:var(--mag-l)}
+.dt-meal-name{font-size:13px;color:var(--txt);flex:1}
+.dt-status{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+.dts-done{background:#EAF3DE;color:#27500A}
+.dts-none{background:var(--bg);color:var(--txt3)}
 
-.pad{padding:1rem}
+/* ─── TOPBAR ─── */
+.topbar{display:flex;align-items:center;padding:calc(var(--safe-top)+12px) 14px 12px;background:var(--card);border-bottom:0.5px solid var(--brd);position:sticky;top:0;z-index:20;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.back-btn{background:none;border:none;color:var(--mag);font-size:15px;font-weight:600;cursor:pointer;padding:0;min-height:var(--tap);display:flex;align-items:center;gap:3px;font-family:'DM Sans',sans-serif}
+.tbar-t{font-size:16px;font-weight:700;flex:1;text-align:center;color:var(--txt)}
+.tbar-pill{font-size:11px;background:var(--mag-p);color:var(--mag);padding:4px 10px;border-radius:20px;font-weight:700}
 
-.prog-card{background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
-.prog-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
-.prog-pct{font-size:32px;font-weight:500;color:var(--mag);line-height:1}
-.prog-lbl{font-size:12px;color:var(--txt2);margin-top:4px}
-.prog-phrase{font-size:12px;color:var(--txt2);text-align:right;max-width:160px;line-height:1.4}
-.prog-bar-wrap{background:var(--bg);border-radius:20px;height:8px;overflow:hidden;margin-bottom:8px}
-.prog-bar-fill{height:100%;border-radius:20px;background:var(--mag);transition:width 0.5s ease}
-.prog-mini{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;margin-top:12px}
-.prog-dot{height:20px;border-radius:4px;background:var(--bg)}
-.prog-dot.done{background:var(--mag)}
-.prog-dot.partial{background:var(--mag-p2)}
+/* ─── BOTTOM NAV ─── */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:0.5px solid var(--brd);display:flex;padding:8px 0 calc(var(--safe-bot)+8px);z-index:30;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;min-height:var(--tap);-webkit-user-select:none;user-select:none;transition:opacity 0.1s}
+.bn:active{opacity:0.6}
+.bn-ico{font-size:22px}
+.bn-lbl{font-size:10px;color:var(--txt3);font-weight:500}
+.bn.act .bn-lbl{color:var(--mag);font-weight:700}
 
-.week-hdr{display:flex;align-items:center;gap:8px;margin:1rem 0 8px}
-.wk-pill{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;color:#fff;background:var(--mag)}
-.wk-pill.s2{background:var(--grn)}
-.wk-sub{font-size:12px;color:var(--txt3)}
+/* ─── PROGRESO ─── */
+.prog-hero{background:var(--mag);border-radius:20px;padding:18px;margin:12px}
+.prog-pct{font-size:48px;font-weight:700;color:#fff;letter-spacing:-2px;line-height:1}
+.prog-lbl{font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px}
+.prog-phrase{font-size:12px;color:rgba(255,255,255,0.85);margin-top:10px;font-style:italic}
+.prog-bar-w{background:rgba(255,255,255,0.2);border-radius:10px;height:7px;margin-top:14px;overflow:hidden}
+.prog-bar-f{height:100%;border-radius:10px;background:#fff;transition:width 0.6s ease}
+.mini14{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;margin-top:12px}
+.m14{height:18px;border-radius:4px;background:rgba(255,255,255,0.2)}
+.m14.done{background:#fff}
+.m14.part{background:rgba(255,255,255,0.5)}
+.stat2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 12px 12px}
+.scard{background:var(--card);border-radius:14px;padding:14px;border:0.5px solid var(--brd)}
+.sc-n{font-size:28px;font-weight:700;color:var(--txt);letter-spacing:-1px}
+.sc-l{font-size:11px;color:var(--txt2);margin-top:2px}
+.week-bar-card{background:var(--card);border-radius:16px;padding:14px;margin:0 12px 12px;border:0.5px solid var(--brd)}
+.wbc-t{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:12px}
+.wb-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.wb-l{font-size:12px;color:var(--txt2);min-width:68px}
+.wb-bw{flex:1;background:var(--bg);border-radius:8px;height:9px;overflow:hidden}
+.wb-bf{height:100%;border-radius:8px;transition:width 0.4s}
+.wb-p{font-size:12px;font-weight:700;min-width:34px;text-align:right}
+.tracker-card{background:var(--card);border-radius:16px;padding:14px;margin:0 12px 80px;border:0.5px solid var(--brd)}
+.day7{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dbox{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--bg);color:var(--txt3)}
+.dbox.d1{background:var(--mag);color:#fff}
+.dbox.p1{background:var(--mag-d);color:var(--mag)}
+.dbox.d2{background:var(--grn);color:#fff}
+.dbox.p2{background:#C0DD97;color:#27500A}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3)}
+.leg-dot{width:10px;height:10px;border-radius:3px}
 
-.day-row{background:var(--card);border:0.5px solid var(--brd);border-radius:10px;margin-bottom:6px;overflow:hidden}
-.day-hdr{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
-.day-hdr:hover{background:var(--bg)}
-.day-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff;background:var(--mag);flex-shrink:0}
-.day-num.s2{background:var(--grn)}
-.day-info{flex:1}
-.day-name{font-size:13px;font-weight:500}
-.day-preview{font-size:11px;color:var(--txt3);margin-top:1px}
-.day-right{display:flex;align-items:center;gap:8px}
-.day-status{font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px}
-.day-status.done{background:#EAF3DE;color:#27500A}
-.day-status.partial{background:#FDF6E3;color:#633806}
-.day-status.empty{background:var(--bg);color:var(--txt3)}
-.chev{font-size:11px;color:var(--txt3);transition:transform 0.2s}
+/* ─── MENU ─── */
+.menu-scroll{flex:1;overflow-y:auto;padding:10px 12px 100px}
+.wk-hdr{display:flex;align-items:center;gap:8px;margin:12px 0 8px}
+.wk-pill{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;color:#fff;background:var(--mag)}
+.wk-pill.g{background:var(--grn)}
+.wk-sub{font-size:11px;color:var(--txt3)}
+.day-card{background:var(--card);border:0.5px solid var(--brd);border-radius:16px;margin-bottom:8px;overflow:hidden}
+.day-hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;min-height:var(--tap);-webkit-user-select:none;user-select:none}
+.day-hdr:active{background:var(--bg)}
+.day-img{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--bg);flex-shrink:0;font-size:22px;display:flex;align-items:center;justify-content:center}
+.day-circ{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:var(--mag);flex-shrink:0}
+.day-circ.g{background:var(--grn)}
+.day-info{flex:1;min-width:0}
+.day-name{font-size:14px;font-weight:700;color:var(--txt)}
+.day-prev{font-size:11px;color:var(--txt3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.sp-done{background:#EAF3DE;color:#27500A}
+.sp-part{background:#FDF6E3;color:#633806}
+.sp-none{background:var(--bg);color:var(--txt3)}
+.chev-icon{color:var(--txt3);transition:transform 0.2s;font-size:14px}
 .day-body{display:none;border-top:0.5px solid var(--brd)}
 .day-body.open{display:block}
 
-.mono-msg{background:var(--gld-p);border-radius:0 0 10px 10px;padding:14px;text-align:center;font-size:13px;color:var(--gld)}
-
-.meal-section{padding:10px 12px;border-bottom:0.5px solid var(--brd)}
-.meal-section:last-child{border-bottom:none}
-.meal-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.meal-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:6px;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap}
-.meal-tag.dp{background:var(--bg);color:var(--txt2)}
-.meal-tag.db{background:#FDF6E3;color:#633806}
-.meal-tag.co{background:#EAF3DE;color:#27500A}
-.meal-tag.ce{background:var(--mag-p);color:#72243E}
-.meal-txt{font-size:12.5px;color:var(--txt);line-height:1.5;flex:1}
-.check-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.chk-btn{display:flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;border-radius:20px;border:0.5px solid var(--brd);background:var(--card);cursor:pointer;color:var(--txt2);transition:all 0.15s}
+/* meal hero image inside day */
+.meal-hero-img{width:100%;height:140px;object-fit:cover;display:block;background:var(--bg)}
+.meal-img-loading{width:100%;height:140px;background:linear-gradient(90deg,var(--bg) 25%,var(--brd) 50%,var(--bg) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.meal-sec{padding:12px 14px;border-bottom:0.5px solid var(--brd)}
+.meal-sec:last-child{border-bottom:none}
+.meal-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+.mt-ay{background:var(--bg);color:var(--txt2)}
+.mt-de{background:#FDF6E3;color:#633806}
+.mt-co{background:#EAF3DE;color:#27500A}
+.mt-ce{background:var(--mag-p);color:#72243E}
+.meal-txt{font-size:13px;color:var(--txt);line-height:1.5;margin-bottom:8px}
+.btns-row{display:flex;gap:8px}
+.chk-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;padding:10px;border-radius:12px;border:0.5px solid var(--brd);background:var(--bg);cursor:pointer;color:var(--txt2);font-family:'DM Sans',sans-serif;font-weight:600;min-height:var(--tap);transition:opacity 0.1s}
+.chk-btn:active{opacity:0.7}
 .chk-btn.yes{background:#EAF3DE;border-color:#97C459;color:#27500A}
 .chk-btn.no{background:#FCEBEB;border-color:#F09595;color:#791F1F}
-.chk-dot{width:8px;height:8px;border-radius:50%;background:var(--brd);flex-shrink:0}
-.chk-btn.yes .chk-dot{background:#639922}
-.chk-btn.no .chk-dot{background:#E24B4A}
+.chk-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex-shrink:0}
+.chk-btn.yes .chk-dot,.chk-btn.no .chk-dot{background:currentColor;border-color:currentColor}
+.mono-box{background:var(--gld-p);padding:14px;text-align:center;font-size:13px;color:var(--gld);line-height:1.5}
 
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.stat-card{background:var(--bg);border-radius:8px;padding:12px}
-.stat-n{font-size:24px;font-weight:500;color:var(--txt)}
-.stat-l{font-size:11px;color:var(--txt2);margin-top:2px}
+/* ─── NOTIFS ─── */
+.notif-scroll{flex:1;overflow-y:auto;padding:12px 12px 100px}
+.notif-card{background:var(--card);border-radius:16px;border:0.5px solid var(--brd);overflow:hidden;margin-bottom:10px}
+.nc-header{padding:14px 16px;display:flex;align-items:center;gap:12px}
+.nc-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nc-info{flex:1}
+.nc-title{font-size:14px;font-weight:700;color:var(--txt)}
+.nc-sub{font-size:12px;color:var(--txt2);margin-top:2px}
+.nc-toggle{position:relative;width:50px;height:28px;flex-shrink:0}
+.nc-toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;border-radius:14px;background:var(--brd);transition:background 0.2s;cursor:pointer}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.nc-toggle input:checked~.toggle-track{background:var(--mag)}
+.nc-toggle input:checked~.toggle-track .toggle-thumb{transform:translateX(22px)}
+.nc-body{padding:0 16px 14px}
+.time-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.time-lbl{font-size:13px;color:var(--txt2);flex:1}
+.time-inp{padding:8px 12px;border-radius:10px;border:0.5px solid var(--brd);background:var(--bg);font-size:14px;font-weight:600;color:var(--txt);font-family:'DM Sans',sans-serif;width:110px}
+.save-notif{width:100%;padding:13px;border-radius:12px;border:none;background:var(--mag);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px}
+.notif-banner{background:var(--grn-p);border:0.5px solid var(--grn-l);border-radius:14px;padding:14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px}
+.nb-ico{font-size:20px;flex-shrink:0}
+.nb-txt{font-size:12px;color:var(--grn);line-height:1.5}
+.notif-preview{background:var(--card);border:0.5px solid var(--brd);border-radius:14px;padding:14px;margin-bottom:14px}
+.np-t{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.np-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--brd)}
+.np-item:last-child{border:none}
+.np-ico{font-size:18px;width:32px;text-align:center}
+.np-info{flex:1}
+.np-title{font-size:13px;font-weight:600;color:var(--txt)}
+.np-time{font-size:11px;color:var(--txt3);margin-top:1px}
+.np-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--grn-p);color:var(--grn)}
+.np-status.off{background:var(--bg);color:var(--txt3)}
 
-.week-prog{background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:12px}
-.wp-title{font-size:12px;font-weight:500;color:var(--txt2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em}
-.wp-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.wp-lbl{font-size:12px;color:var(--txt2);min-width:70px}
-.wp-bar-w{flex:1;background:var(--bg);border-radius:10px;height:10px;overflow:hidden}
-.wp-bar-f{height:100%;border-radius:10px;transition:width 0.4s}
-.wp-bar-f.s1{background:var(--mag)}
-.wp-bar-f.s2{background:var(--grn)}
-.wp-pct{font-size:11px;font-weight:500;min-width:30px;text-align:right}
-
-.streak-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
-.s-box{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;border:0.5px solid var(--brd);color:var(--txt3);background:var(--bg)}
-.s-box.done{background:var(--mag);color:#fff;border-color:var(--mag)}
-.s-box.partial{background:var(--mag-p2);color:var(--mag);border-color:var(--mag-p)}
-.s-box.grn{background:var(--grn);color:#fff;border-color:var(--grn)}
-.s-box.grn-p{background:#C0DD97;color:#27500A;border-color:#97C459}
-
-.tip-row{display:flex;gap:8px;margin-bottom:8px}
-.tip-card{flex:1;border-radius:10px;padding:10px 12px}
-.tip-card.mag{background:var(--mag-p);border:0.5px solid var(--mag-p2)}
-.tip-card.grn{background:var(--grn-p);border:0.5px solid #9FE1CB}
-.tip-t{font-size:11px;font-weight:500;margin-bottom:3px}
-.tip-t.mag{color:#72243E}
-.tip-t.grn{color:#085041}
-.tip-b{font-size:11.5px;color:var(--txt2);line-height:1.4}
-
-.shop-sec{margin-bottom:1rem}
-.shop-hdr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px}
-.shop-hdr.m{background:var(--grn-p)}
-.shop-hdr.s{background:var(--blu-p)}
-.shop-hdr.p{background:var(--gld-p)}
-.shop-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.shop-icon.m{background:var(--grn-l);color:#fff}
-.shop-icon.s{background:var(--blu);color:#fff}
-.shop-icon.p{background:var(--gld-m);color:#fff}
-.shop-name{font-size:13px;font-weight:500}
-.shop-name.m{color:var(--grn)}
-.shop-name.s{color:var(--blu)}
-.shop-name.p{color:var(--gld)}
-.shop-cnt{font-size:11px;color:var(--txt3);margin-left:auto}
-.cat-lbl{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt3);margin:0 0 5px 4px}
-.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
-.chip{display:flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;border-radius:20px;border:0.5px solid var(--brd);background:var(--card);cursor:pointer;color:var(--txt);transition:all 0.15s}
-.chip.got{background:var(--mag-p);border-color:var(--mag-l);color:#72243E;text-decoration:line-through;opacity:0.7}
+/* ─── COMPRAS ─── */
+.shop-scroll{flex:1;overflow-y:auto;padding:10px 12px 100px}
+.store-blk{margin-bottom:18px}
+.store-hdr{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;margin-bottom:8px}
+.sh-m{background:var(--grn-p)}.sh-s{background:var(--blu-p)}.sh-p{background:var(--gld-p)}
+.sh-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.si-m{background:var(--grn-l);color:#fff}.si-s{background:var(--blu);color:#fff}.si-p{background:var(--gld-m);color:#fff}
+.sh-name{font-size:14px;font-weight:700}
+.sn-m{color:var(--grn)}.sn-s{color:var(--blu)}.sn-p{color:var(--gld)}
+.sh-cnt{font-size:11px;color:var(--txt3);margin-left:auto;font-weight:500}
+.sh-bar{background:var(--bg);border-radius:8px;height:4px;overflow:hidden;margin-bottom:10px}
+.sh-bar-f{height:100%;border-radius:8px;transition:width 0.4s}
+.cat-lbl{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt3);margin:8px 0 6px 2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.chip{display:flex;align-items:center;gap:5px;font-size:13px;padding:8px 13px;border-radius:22px;border:0.5px solid var(--brd);background:var(--card);cursor:pointer;color:var(--txt);-webkit-user-select:none;user-select:none;min-height:var(--tap);transition:opacity 0.1s;font-family:'DM Sans',sans-serif;font-weight:500}
+.chip:active{opacity:0.7}
+.chip.got{background:var(--mag-p);border-color:#D4537E;color:#72243E;text-decoration:line-through;opacity:0.7}
 .chip-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--brd);flex-shrink:0}
 .chip.got .chip-dot{background:var(--mag);border-color:var(--mag)}
-.shop-prog{background:var(--bg);border-radius:20px;height:5px;overflow:hidden;margin:6px 0 12px}
-.shop-prog-f{height:100%;border-radius:20px;background:var(--mag);transition:width 0.4s}
+.total-bar{display:flex;align-items:center;gap:10px;background:var(--card);border:0.5px solid var(--brd);border-radius:14px;padding:12px 14px;margin:0 0 14px}
+.tb-bar-w{flex:1;background:var(--bg);border-radius:8px;height:7px;overflow:hidden}
+.tb-bar-f{height:100%;border-radius:8px;background:var(--mag);transition:width 0.4s}
+.tb-lbl{font-size:12px;color:var(--txt2);font-weight:600;white-space:nowrap}
+.reset-btn{display:block;margin:0 auto 10px;background:none;border:0.5px solid var(--brd);border-radius:12px;padding:12px 24px;font-size:13px;color:var(--txt3);cursor:pointer;font-family:'DM Sans',sans-serif}
 
-.snack-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.snack{background:var(--card);border:0.5px solid var(--brd);border-radius:10px;padding:12px}
-.snack-ico{font-size:20px;margin-bottom:6px}
-.snack-t{font-size:12.5px;color:var(--txt)}
+/* ─── PROFILE ─── */
+.profile-scroll{flex:1;overflow-y:auto;padding:0 0 100px}
+.prof-hero{background:var(--mag);padding:24px 18px 28px;text-align:center}
+.prof-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 12px;border:3px solid rgba(255,255,255,0.35)}
+.prof-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff}
+.prof-email{font-size:13px;color:rgba(255,255,255,0.65);margin-top:4px}
+.prof-body{padding:14px}
+.prof-card{background:var(--card);border:0.5px solid var(--brd);border-radius:16px;overflow:hidden;margin-bottom:12px}
+.prof-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:0.5px solid var(--brd);cursor:pointer;min-height:var(--tap)}
+.prof-row:last-child{border:none}
+.prof-row:active{background:var(--bg)}
+.pr-ico{font-size:20px;width:32px;text-align:center}
+.pr-txt{font-size:14px;color:var(--txt);flex:1;font-weight:500}
+.pr-val{font-size:13px;color:var(--txt3)}
+.pr-chevron{font-size:14px;color:var(--txt3)}
+.logout-btn{width:calc(100%-28px);display:block;margin:0 14px;padding:14px;border-radius:14px;border:1.5px solid #E24B4A;background:transparent;color:#E24B4A;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
 
-.ritual-box{background:var(--blu-p);border:0.5px solid #B5D4F4;border-radius:10px;padding:12px 14px;margin-bottom:12px}
-.ritual-t{font-size:12px;font-weight:500;color:#0C447C;margin-bottom:4px}
-.ritual-b{font-size:12px;color:var(--txt2);line-height:1.5}
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:calc(var(--safe-bot)+90px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:500;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── MODAL ─── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.on{display:flex}
+.modal-card{background:var(--card);border-radius:24px 24px 0 0;padding:24px;width:100%;max-width:500px;padding-bottom:calc(24px+var(--safe-bot))}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--brd);margin:0 auto 16px}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--txt);margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--txt2);margin-bottom:18px}
 </style>
+</head>
+<body>
 
-<div id="s-home" class="screen on">
-  <div class="hero">
-    <div class="brand">Six Power Wellness</div>
-    <div class="hero-title">Reto<br>Desintoxicación</div>
-    <div class="hero-sub">14 días · Desinflamar · Equilibrar · Sostener</div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n" id="h-dias">0</div><div class="hstat-l">Días completados</div></div>
-      <div class="hstat"><div class="hstat-n" id="h-pct">0%</div><div class="hstat-l">Progreso total</div></div>
-      <div class="hstat"><div class="hstat-n" id="h-items">0</div><div class="hstat-l">Compras listas</div></div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div class="screen on" id="s-login">
+  <div class="login-bg">
+    <div class="login-circle lc1"></div>
+    <div class="login-circle lc2"></div>
+    <div class="login-circle lc3"></div>
+  </div>
+  <div class="login-top">
+    <div class="login-brand">Six Power Wellness</div>
+    <div class="login-title">Reto<br>Desintox.</div>
+    <div class="login-sub">14 días para transformar<br>tu cuerpo y mente</div>
+  </div>
+  <div class="login-card">
+    <h2>Bienvenida</h2>
+    <p>Inicia sesión o crea tu cuenta para comenzar</p>
+    <div class="tabs-login">
+      <div class="tl act" id="tl-login" onclick="switchTab('login')">Iniciar sesión</div>
+      <div class="tl" id="tl-reg" onclick="switchTab('reg')">Registrarse</div>
     </div>
-    <div class="hero-nav">
-      <div class="hnav-btn" onclick="go('s-progreso')">
-        <div class="hnav-icon">📊</div>
-        <div class="hnav-title">Mi progreso</div>
-        <div class="hnav-sub">Ver estadísticas del reto</div>
+
+    <!-- LOGIN FORM -->
+    <div id="form-login">
+      <div class="inp-group">
+        <label class="inp-label">Correo electrónico</label>
+        <input class="inp" id="l-email" type="email" placeholder="tu@email.com" autocomplete="email">
       </div>
-      <div class="hnav-btn" onclick="go('s-menu')">
-        <div class="hnav-icon">🥗</div>
-        <div class="hnav-title">Menú 14 días</div>
-        <div class="hnav-sub">Marcar comidas hechas</div>
+      <div class="inp-group">
+        <label class="inp-label">Contraseña</label>
+        <input class="inp" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <div class="hnav-btn" onclick="go('s-compras')">
-        <div class="hnav-icon">🛒</div>
-        <div class="hnav-title">Lista de compras</div>
-        <div class="hnav-sub">45 productos · 3 tiendas</div>
+      <button class="btn-primary" onclick="doLogin()">Entrar al reto →</button>
+      <div class="login-err" id="l-err"></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="form-reg" style="display:none">
+      <div class="inp-row">
+        <div class="inp-group">
+          <label class="inp-label">Nombre</label>
+          <input class="inp" id="r-name" type="text" placeholder="Tu nombre" autocomplete="given-name">
+        </div>
+        <div class="inp-group">
+          <label class="inp-label">Apellido</label>
+          <input class="inp" id="r-last" type="text" placeholder="Apellido" autocomplete="family-name">
+        </div>
       </div>
-      <div class="hnav-btn" onclick="go('s-colaciones')">
-        <div class="hnav-icon">🍎</div>
-        <div class="hnav-title">Colaciones</div>
-        <div class="hnav-sub">Opciones si hay hambre</div>
+      <div class="inp-group">
+        <label class="inp-label">Correo electrónico</label>
+        <input class="inp" id="r-email" type="email" placeholder="tu@email.com" autocomplete="email">
       </div>
+      <div class="inp-group">
+        <label class="inp-label">Contraseña</label>
+        <input class="inp" id="r-pass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      <div class="inp-group">
+        <label class="inp-label">Tu avatar</label>
+        <div class="avatar-pick" id="av-pick">
+          <div class="av-opt sel" onclick="pickAv(this,'🌸')">🌸</div>
+          <div class="av-opt" onclick="pickAv(this,'🦋')">🦋</div>
+          <div class="av-opt" onclick="pickAv(this,'🌿')">🌿</div>
+          <div class="av-opt" onclick="pickAv(this,'⭐')">⭐</div>
+          <div class="av-opt" onclick="pickAv(this,'🔥')">🔥</div>
+          <div class="av-opt" onclick="pickAv(this,'💎')">💎</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="doRegister()">Crear cuenta →</button>
+      <div class="login-err" id="r-err"></div>
     </div>
   </div>
 </div>
 
-<div id="s-progreso" class="screen">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
-    <div class="topbar-title">Mi progreso</div>
-    <div class="topbar-badge" id="prog-badge">0%</div>
-  </div>
-  <div class="pad">
-    <div class="prog-card">
-      <div class="prog-top">
-        <div><div class="prog-pct" id="p-big-pct">0%</div><div class="prog-lbl">del reto completado</div></div>
-        <div class="prog-phrase" id="p-phrase">¡Empieza hoy tu transformación!</div>
-      </div>
-      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="p-bar" style="width:0%"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt3);margin-top:4px"><span>Día 1</span><span>Día 14</span></div>
-      <div class="prog-mini" id="p-mini"></div>
-    </div>
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div class="screen" id="s-app" style="display:none;position:relative">
 
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-n" id="ps-completos">0</div><div class="stat-l">Días completos</div></div>
-      <div class="stat-card"><div class="stat-n" id="ps-parciales">0</div><div class="stat-l">Días en progreso</div></div>
-      <div class="stat-card"><div class="stat-n" id="ps-comidas">0</div><div class="stat-l">Comidas realizadas</div></div>
-      <div class="stat-card"><div class="stat-n" id="ps-compras">0/45</div><div class="stat-l">Productos comprados</div></div>
-    </div>
-
-    <div class="week-prog">
-      <div class="wp-title">Por semana</div>
-      <div class="wp-row">
-        <div class="wp-lbl">Semana 1</div>
-        <div class="wp-bar-w"><div class="wp-bar-f s1" id="wp1" style="width:0%"></div></div>
-        <div class="wp-pct" id="wp1-p" style="color:var(--mag)">0%</div>
+  <!-- HOME TAB -->
+  <div id="tab-home" class="tab-content" style="display:flex;flex-direction:column;flex:1">
+    <div class="home-hero">
+      <div class="hh-bg"><div class="hh-c1"></div><div class="hh-c2"></div></div>
+      <div class="hh-top">
+        <div>
+          <div class="hh-greet" id="hh-greet">Buenos días</div>
+          <div class="hh-name" id="hh-name">Cargando...</div>
+        </div>
+        <div class="hh-avatar" id="hh-avatar" onclick="showTab('profile')">🌸</div>
       </div>
-      <div class="wp-row">
-        <div class="wp-lbl">Semana 2</div>
-        <div class="wp-bar-w"><div class="wp-bar-f s2" id="wp2" style="width:0%"></div></div>
-        <div class="wp-pct" id="wp2-p" style="color:var(--grn)">0%</div>
+      <div class="hh-stats">
+        <div class="hs"><div class="hs-n" id="hh-dias">0</div><div class="hs-l">Días listos</div></div>
+        <div class="hs"><div class="hs-n" id="hh-pct">0%</div><div class="hs-l">Progreso</div></div>
+        <div class="hs"><div class="hs-n" id="hh-shop">0</div><div class="hs-l">Comprado</div></div>
       </div>
     </div>
-
-    <div style="background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:12px">
-      <div class="wp-title">Tracker día a día</div>
-      <div class="streak-row" id="streak-row"></div>
-      <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2)"><div style="width:12px;height:12px;border-radius:3px;background:var(--mag)"></div>Semana 1 completo</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2)"><div style="width:12px;height:12px;border-radius:3px;background:var(--grn)"></div>Semana 2 completo</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2)"><div style="width:12px;height:12px;border-radius:3px;background:var(--mag-p2)"></div>Parcial</div>
+    <div class="home-scroll">
+      <div style="margin-bottom:20px">
+        <div class="section-title" style="margin-bottom:10px">Hoy</div>
+        <div class="day-today" id="today-card"></div>
+      </div>
+      <div class="section-title" style="margin-bottom:10px">Acceso rápido</div>
+      <div class="quick-grid">
+        <div class="qcard" onclick="showTab('progress')">
+          <div class="qcard-ico">📊</div>
+          <div class="qcard-t">Mi progreso</div>
+          <div class="qcard-s">Ver estadísticas</div>
+          <div class="qcard-badge" id="qb-pct">0%</div>
+        </div>
+        <div class="qcard" onclick="showTab('menu')">
+          <div class="qcard-ico">🥗</div>
+          <div class="qcard-t">Menú</div>
+          <div class="qcard-s">14 días · Marcar</div>
+        </div>
+        <div class="qcard" onclick="showTab('shop')">
+          <div class="qcard-ico">🛒</div>
+          <div class="qcard-t">Compras</div>
+          <div class="qcard-s" id="qb-shop">0/45 productos</div>
+        </div>
+        <div class="qcard" onclick="showTab('notifs')">
+          <div class="qcard-ico">🔔</div>
+          <div class="qcard-t">Notificaciones</div>
+          <div class="qcard-s">Recordatorios</div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="tip-row">
-      <div class="tip-card mag"><div class="tip-t mag">Ritual diario</div><div class="tip-b">Agua tibia con limón al despertar, antes de cualquier alimento.</div></div>
-      <div class="tip-card grn"><div class="tip-t grn">Recuerda</div><div class="tip-b">Las colaciones son opcionales. Solo si hay hambre real.</div></div>
+  <!-- PROGRESO TAB -->
+  <div id="tab-progress" class="tab-content" style="display:none;flex-direction:column;flex:1">
+    <div class="topbar">
+      <div style="width:60px"></div>
+      <div class="tbar-t">Mi progreso</div>
+      <div class="tbar-pill" id="prog-pill">0%</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding-bottom:90px">
+      <div class="prog-hero">
+        <div class="prog-pct" id="prog-pct">0%</div>
+        <div class="prog-lbl">del reto completado</div>
+        <div class="prog-phrase" id="prog-phrase">¡Empieza hoy tu transformación!</div>
+        <div class="prog-bar-w"><div class="prog-bar-f" id="prog-bar" style="width:0%"></div></div>
+        <div class="mini14" id="prog-mini"></div>
+      </div>
+      <div class="stat2">
+        <div class="scard"><div class="sc-n" id="ps-comp">0</div><div class="sc-l">Días completos</div></div>
+        <div class="scard"><div class="sc-n" id="ps-parc">0</div><div class="sc-l">En progreso</div></div>
+        <div class="scard"><div class="sc-n" id="ps-meals">0</div><div class="sc-l">Comidas hechas</div></div>
+        <div class="scard"><div class="sc-n" id="ps-shop">0/45</div><div class="sc-l">Productos</div></div>
+      </div>
+      <div class="week-bar-card">
+        <div class="wbc-t">Avance por semana</div>
+        <div class="wb-row">
+          <div class="wb-l">Semana 1</div>
+          <div class="wb-bw"><div class="wb-bf" id="wb1" style="width:0%;background:var(--mag)"></div></div>
+          <div class="wb-p" id="wb1p" style="color:var(--mag)">0%</div>
+        </div>
+        <div class="wb-row" style="margin:0">
+          <div class="wb-l">Semana 2</div>
+          <div class="wb-bw"><div class="wb-bf" id="wb2" style="width:0%;background:var(--grn)"></div></div>
+          <div class="wb-p" id="wb2p" style="color:var(--grn)">0%</div>
+        </div>
+      </div>
+      <div class="tracker-card">
+        <div class="wbc-t">Semana 1</div>
+        <div class="day7" id="tr-s1"></div>
+        <div class="wbc-t" style="margin-top:12px">Semana 2</div>
+        <div class="day7" id="tr-s2"></div>
+        <div class="legend" style="margin-top:12px">
+          <div class="leg"><div class="leg-dot" style="background:var(--mag)"></div>S1 ✓</div>
+          <div class="leg"><div class="leg-dot" style="background:var(--grn)"></div>S2 ✓</div>
+          <div class="leg"><div class="leg-dot" style="background:var(--mag-d)"></div>Parcial</div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="s-menu" class="screen">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
-    <div class="topbar-title">Menú 14 días</div>
-    <div class="topbar-badge" id="menu-badge">0 hechos</div>
+  <!-- MENU TAB -->
+  <div id="tab-menu" class="tab-content" style="display:none;flex-direction:column;flex:1">
+    <div class="topbar">
+      <div style="width:60px"></div>
+      <div class="tbar-t">Menú 14 días</div>
+      <div class="tbar-pill" id="menu-pill">0 hechos</div>
+    </div>
+    <div class="menu-scroll" id="menu-list"></div>
   </div>
-  <div class="pad" id="menu-list"></div>
-</div>
 
-<div id="s-compras" class="screen">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
-    <div class="topbar-title">Lista de compras</div>
-    <div class="topbar-badge" id="shop-badge">0/45</div>
-  </div>
-  <div class="pad">
-    <div style="margin-bottom:10px">
-      <div class="shop-prog"><div class="shop-prog-f" id="shop-fill" style="width:0%"></div></div>
-      <div style="font-size:11px;color:var(--txt3);text-align:right" id="shop-lbl">0 de 45 productos</div>
+  <!-- COMPRAS TAB -->
+  <div id="tab-shop" class="tab-content" style="display:none;flex-direction:column;flex:1">
+    <div class="topbar">
+      <div style="width:60px"></div>
+      <div class="tbar-t">Lista de compras</div>
+      <div class="tbar-pill" id="shop-pill">0/45</div>
     </div>
-    <div id="shop-list"></div>
-    <button onclick="resetShop()" style="background:none;border:0.5px solid var(--brd);border-radius:8px;padding:7px 16px;font-size:12px;color:var(--txt2);cursor:pointer;display:block;margin:0 auto 1rem">Reiniciar lista</button>
+    <div class="shop-scroll">
+      <div class="total-bar">
+        <div class="tb-bar-w"><div class="tb-bar-f" id="shop-bar" style="width:0%"></div></div>
+        <div class="tb-lbl" id="shop-lbl">0 de 45</div>
+      </div>
+      <div id="shop-list"></div>
+      <button class="reset-btn" onclick="resetShop()">Reiniciar lista</button>
+    </div>
   </div>
-</div>
 
-<div id="s-colaciones" class="screen">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('s-home')">← Inicio</button>
-    <div class="topbar-title">Colaciones y rituales</div>
+  <!-- NOTIFS TAB -->
+  <div id="tab-notifs" class="tab-content" style="display:none;flex-direction:column;flex:1">
+    <div class="topbar">
+      <div style="width:60px"></div>
+      <div class="tbar-t">Notificaciones</div>
+    </div>
+    <div class="notif-scroll">
+      <div class="notif-banner">
+        <div class="nb-ico">🔔</div>
+        <div class="nb-txt">Activa los recordatorios para no olvidar tus comidas y mantener el ritmo del reto. Los horarios se guardan automáticamente.</div>
+      </div>
+
+      <!-- Desayuno/Comida/Cena -->
+      <div class="notif-card">
+        <div class="nc-header">
+          <div class="nc-ico" style="background:#FDF6E3;font-size:20px">🍳</div>
+          <div class="nc-info">
+            <div class="nc-title">Recordatorio de comidas</div>
+            <div class="nc-sub">Desayuno, comida y cena</div>
+          </div>
+          <label class="nc-toggle">
+            <input type="checkbox" id="nt-meals" onchange="toggleNotif('meals')">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+        <div class="nc-body" id="nb-meals" style="display:none">
+          <div class="time-row">
+            <div class="time-lbl">🌅 Desayuno</div>
+            <input class="time-inp" type="time" id="nt-breakfast" value="08:00">
+          </div>
+          <div class="time-row">
+            <div class="time-lbl">☀️ Comida</div>
+            <input class="time-inp" type="time" id="nt-lunch" value="14:00">
+          </div>
+          <div class="time-row" style="margin-bottom:0">
+            <div class="time-lbl">🌙 Cena</div>
+            <input class="time-inp" type="time" id="nt-dinner" value="20:00">
+          </div>
+          <button class="save-notif" onclick="saveNotif('meals')">Guardar horarios</button>
+        </div>
+      </div>
+
+      <!-- Motivación -->
+      <div class="notif-card">
+        <div class="nc-header">
+          <div class="nc-ico" style="background:var(--mag-p);font-size:20px">💪</div>
+          <div class="nc-info">
+            <div class="nc-title">Motivación diaria</div>
+            <div class="nc-sub">Mensaje inspiracional cada mañana</div>
+          </div>
+          <label class="nc-toggle">
+            <input type="checkbox" id="nt-motiv" onchange="toggleNotif('motiv')">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+        <div class="nc-body" id="nb-motiv" style="display:none">
+          <div class="time-row" style="margin-bottom:0">
+            <div class="time-lbl">🌄 Hora del mensaje</div>
+            <input class="time-inp" type="time" id="nt-motiv-time" value="07:00">
+          </div>
+          <button class="save-notif" onclick="saveNotif('motiv')">Guardar</button>
+        </div>
+      </div>
+
+      <!-- Resumen del día -->
+      <div class="notif-card">
+        <div class="nc-header">
+          <div class="nc-ico" style="background:var(--grn-p);font-size:20px">📋</div>
+          <div class="nc-info">
+            <div class="nc-title">Resumen del día</div>
+            <div class="nc-sub">Revisión nocturna de tu avance</div>
+          </div>
+          <label class="nc-toggle">
+            <input type="checkbox" id="nt-summary" onchange="toggleNotif('summary')">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+        <div class="nc-body" id="nb-summary" style="display:none">
+          <div class="time-row" style="margin-bottom:0">
+            <div class="time-lbl">🌛 Hora del resumen</div>
+            <input class="time-inp" type="time" id="nt-summary-time" value="21:30">
+          </div>
+          <button class="save-notif" onclick="saveNotif('summary')">Guardar</button>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="notif-preview">
+        <div class="np-t">Vista previa de notificaciones</div>
+        <div class="np-item">
+          <div class="np-ico">🍳</div>
+          <div class="np-info">
+            <div class="np-title">¡Hora del desayuno!</div>
+            <div class="np-time" id="prev-breakfast">08:00 · Avena overnight te espera</div>
+          </div>
+          <div class="np-status off" id="prev-status-meals">Apagado</div>
+        </div>
+        <div class="np-item">
+          <div class="np-ico">💪</div>
+          <div class="np-info">
+            <div class="np-title">Tú puedes lograrlo</div>
+            <div class="np-time" id="prev-motiv">07:00 · Mensaje motivacional</div>
+          </div>
+          <div class="np-status off" id="prev-status-motiv">Apagado</div>
+        </div>
+        <div class="np-item">
+          <div class="np-ico">📋</div>
+          <div class="np-info">
+            <div class="np-title">Tu resumen de hoy</div>
+            <div class="np-time" id="prev-summary">21:30 · Revisión del día</div>
+          </div>
+          <div class="np-status off" id="prev-status-summary">Apagado</div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="pad">
-    <div class="ritual-box">
-      <div class="ritual-t">Ritual matutino · Al despertar</div>
-      <div class="ritual-b">Agua tibia con limón antes de cualquier alimento o bebida. Este hábito activa la digestión y apoya la desintoxicación.</div>
+
+  <!-- PROFILE TAB -->
+  <div id="tab-profile" class="tab-content" style="display:none;flex-direction:column;flex:1">
+    <div class="topbar">
+      <div style="width:60px"></div>
+      <div class="tbar-t">Mi perfil</div>
+      <div style="width:60px"></div>
     </div>
-    <div style="font-size:12px;font-weight:500;color:var(--txt2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Opciones de colaciones (si hay hambre)</div>
-    <div class="snack-grid">
-      <div class="snack"><div class="snack-ico" style="font-size:20px">🍌</div><div class="snack-t">Pan de plátano y semillas</div></div>
-      <div class="snack"><div class="snack-ico" style="font-size:20px">🍓</div><div class="snack-t">Ensalada de frutas con chamoy</div></div>
-      <div class="snack"><div class="snack-ico" style="font-size:20px">🫧</div><div class="snack-t">Kombucha</div></div>
-      <div class="snack"><div class="snack-ico" style="font-size:20px">🍦</div><div class="snack-t">Helado de yogurth griego con cacao</div></div>
-    </div>
-    <div class="ritual-box" style="margin-top:1rem;background:var(--grn-p);border-color:#9FE1CB">
-      <div class="ritual-t" style="color:#085041">Importante</div>
-      <div class="ritual-b">Las colaciones son <strong>opcionales</strong>. Consúmelas únicamente si sientes hambre real entre comidas, no por ansiedad o aburrimiento.</div>
+    <div class="profile-scroll">
+      <div class="prof-hero">
+        <div class="prof-avatar" id="prof-avatar">🌸</div>
+        <div class="prof-name" id="prof-name">Usuario</div>
+        <div class="prof-email" id="prof-email">email@email.com</div>
+      </div>
+      <div class="prof-body">
+        <div class="prof-card">
+          <div class="prof-row">
+            <div class="pr-ico">📅</div>
+            <div class="pr-txt">Inicio del reto</div>
+            <div class="pr-val" id="prof-start">—</div>
+          </div>
+          <div class="prof-row">
+            <div class="pr-ico">🏆</div>
+            <div class="pr-txt">Días completados</div>
+            <div class="pr-val" id="prof-days">0</div>
+          </div>
+          <div class="prof-row">
+            <div class="pr-ico">🥗</div>
+            <div class="pr-txt">Comidas realizadas</div>
+            <div class="pr-val" id="prof-meals">0</div>
+          </div>
+          <div class="prof-row" style="border:none">
+            <div class="pr-ico">⭐</div>
+            <div class="pr-txt">Progreso total</div>
+            <div class="pr-val" id="prof-pct">0%</div>
+          </div>
+        </div>
+        <div class="prof-card">
+          <div class="prof-row" style="border:none">
+            <div class="pr-ico">🔔</div>
+            <div class="pr-txt">Notificaciones</div>
+            <div class="pr-chevron">›</div>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()">Cerrar sesión</button>
+      </div>
     </div>
   </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bnav">
+    <div class="bn act" id="bn-home" onclick="showTab('home')">
+      <div class="bn-ico">🏠</div>
+      <div class="bn-lbl">Inicio</div>
+    </div>
+    <div class="bn" id="bn-progress" onclick="showTab('progress')">
+      <div class="bn-ico">📊</div>
+      <div class="bn-lbl">Progreso</div>
+    </div>
+    <div class="bn" id="bn-menu" onclick="showTab('menu')">
+      <div class="bn-ico">🥗</div>
+      <div class="bn-lbl">Menú</div>
+    </div>
+    <div class="bn" id="bn-shop" onclick="showTab('shop')">
+      <div class="bn-ico">🛒</div>
+      <div class="bn-lbl">Compras</div>
+    </div>
+    <div class="bn" id="bn-profile" onclick="showTab('profile')">
+      <div class="bn-ico">👤</div>
+      <div class="bn-lbl">Perfil</div>
+    </div>
+  </nav>
 </div>
 
 <script>
-var state={meals:{},shop:{}};
-
-var menuData=[
-  {d:1,s:1,label:"Día 1",tag:"Mono dieta",mono:true,meals:[{t:"dp",tl:"Todo el día",text:"Pera y Manzana a libre demanda · Agua tibia con limón"}]},
-  {d:2,s:1,label:"Día 2",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Dos huevos a la mexicana · Aguacate · 2 tortillas nixtamalizado o pan de masa madre"},
-    {t:"co",tl:"Comida",text:"Crema de zanahoria sin lácteos · Pescado empapelado"},
-    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
-  ]},
-  {d:3,s:1,label:"Día 3",meals:[
-    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
-    {t:"db",tl:"Desayuno",text:"Avena overnight"},
-    {t:"co",tl:"Comida",text:"Ensalada de garbanzo o lentejas · Aguacate · 2 tostadas horneadas"},
-    {t:"ce",tl:"Cena",text:"Crema de zanahoria sin lácteos · Shot de kéfir · Té de diente de león"}
-  ]},
-  {d:4,s:1,label:"Día 4",meals:[
-    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
-    {t:"db",tl:"Desayuno",text:"Yogurth griego sin azúcar · Granola · Papaya o frutos rojos"},
-    {t:"co",tl:"Comida",text:"Ensalada fresca · Pescado empapelado"},
-    {t:"ce",tl:"Cena",text:"Nopales asados y frijoles de la olla · Té de diente de león"}
-  ]},
-  {d:5,s:1,label:"Día 5",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Avena overnight"},
-    {t:"co",tl:"Comida",text:"Frijoles de olla · Ensalada de nopales · Aguacate"},
-    {t:"ce",tl:"Cena",text:"Arroz Basmati · Verduras salteadas · Té de diente de León"}
-  ]},
-  {d:6,s:1,label:"Día 6",meals:[
-    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
-    {t:"db",tl:"Desayuno",text:"Dos huevos con espinacas · Nopales asados o verduras a la plancha · 2 tortillas o pan de masa madre"},
-    {t:"co",tl:"Comida",text:"Ensalada de garbanzo o lentejas · Aguacate · 2 tostadas horneadas"},
-    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
-  ]},
-  {d:7,s:1,label:"Día 7",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Hot cakes de avena y frutos rojos o Avena horneada"},
-    {t:"co",tl:"Comida",text:"Pescado al pastor · Ensalada fresca"},
-    {t:"ce",tl:"Cena",text:"Crema de zanahoria sin lácteos · Shot de kéfir · Té de diente de león"}
-  ]},
-  {d:8,s:2,label:"Día 8",meals:[
-    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
-    {t:"db",tl:"Desayuno",text:"Huevos turcos"},
-    {t:"co",tl:"Comida",text:"Calabazas rellenas de pollo en salsa verde · Ensalada fresca"},
-    {t:"ce",tl:"Cena",text:"Crema de verduras sin lácteos"}
-  ]},
-  {d:9,s:2,label:"Día 9",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Toast de espinacas"},
-    {t:"co",tl:"Comida",text:"Albóndigas con verduras · Ensalada fresca"},
-    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
-  ]},
-  {d:10,s:2,label:"Día 10",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Bowl abundante de frutos rojos"},
-    {t:"co",tl:"Comida",text:"Ensalada de pollo · Aguacate · Dos tostadas horneadas"},
-    {t:"ce",tl:"Cena",text:"Arroz Basmati con lentejas · Té de manzanilla"}
-  ]},
-  {d:11,s:2,label:"Día 11",meals:[
-    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
-    {t:"db",tl:"Desayuno",text:"Dos huevos con espinacas · Nopales asados · 2 tortillas o pan de masa madre"},
-    {t:"co",tl:"Comida",text:"Crema de verduras sin lácteos · Lasaña de calabaza"},
-    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
-  ]},
-  {d:12,s:2,label:"Día 12",meals:[
-    {t:"dp",tl:"Ayunas",text:"Media taza de caldo de huesos"},
-    {t:"db",tl:"Desayuno",text:"Hot cakes de avena y frutos rojos o Avena horneada"},
-    {t:"co",tl:"Comida",text:"Ensalada griega"},
-    {t:"ce",tl:"Cena",text:"Crema de verduras sin lácteos · Té de manzanilla"}
-  ]},
-  {d:13,s:2,label:"Día 13",tag:"Día libre",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Huevos divorciados sobre nopal asado · Aguacate"},
-    {t:"co",tl:"Comida",text:"Día Libre 🎉"},
-    {t:"ce",tl:"Cena",text:"Pizza casera de vegetales"}
-  ]},
-  {d:14,s:2,label:"Día 14",tag:"Último día",meals:[
-    {t:"dp",tl:"Ayunas",text:"Shot de kéfir"},
-    {t:"db",tl:"Desayuno",text:"Bowl abundante de frutos rojos"},
-    {t:"co",tl:"Comida",text:"Aguacate relleno de ensalada de pollo"},
-    {t:"ce",tl:"Cena",text:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}
-  ]}
+// ─── DATA ───
+var DAYS=[
+  {d:1,s:1,mono:true,img:'pera manzana fruta fresca',meals:[{tl:"Todo el día",tc:"ay",tx:"Pera y Manzana a libre demanda · Agua tibia con limón"}]},
+  {d:2,s:1,img:'huevos a la mexicana desayuno',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Dos huevos a la mexicana · Aguacate · 2 tortillas nixtamalizado o pan de masa madre"},{tl:"Comida",tc:"co",tx:"Crema de zanahoria sin lácteos · Pescado empapelado"},{tl:"Cena",tc:"ce",tx:"Yogurth griego sin azúcar · Mix de semillas · Té de diente de león"}]},
+  {d:3,s:1,img:'avena overnight bowl saludable',meals:[{tl:"Ayunas",tc:"ay",tx:"Media taza de caldo de huesos"},{tl:"Desayuno",tc:"de",tx:"Avena overnight"},{tl:"Comida",tc:"co",tx:"Ensalada de garbanzo o lentejas · Aguacate · 2 tostadas"},{tl:"Cena",tc:"ce",tx:"Crema de zanahoria · Shot de kéfir · Té de diente de león"}]},
+  {d:4,s:1,img:'yogurt griego frutos rojos bowl',meals:[{tl:"Ayunas",tc:"ay",tx:"Media taza de caldo de huesos"},{tl:"Desayuno",tc:"de",tx:"Yogurth griego sin azúcar · Granola · Papaya o frutos rojos"},{tl:"Comida",tc:"co",tx:"Ensalada fresca · Pescado empapelado"},{tl:"Cena",tc:"ce",tx:"Nopales asados y frijoles de la olla · Té"}]},
+  {d:5,s:1,img:'frijoles de olla nopales mexicano',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Avena overnight"},{tl:"Comida",tc:"co",tx:"Frijoles de olla · Ensalada de nopales · Aguacate"},{tl:"Cena",tc:"ce",tx:"Arroz Basmati · Verduras salteadas · Té"}]},
+  {d:6,s:1,img:'huevos espinacas nopales desayuno',meals:[{tl:"Ayunas",tc:"ay",tx:"Media taza de caldo de huesos"},{tl:"Desayuno",tc:"de",tx:"Dos huevos con espinacas · Nopales · Tortillas"},{tl:"Comida",tc:"co",tx:"Ensalada de garbanzo o lentejas · Aguacate · Tostadas"},{tl:"Cena",tc:"ce",tx:"Yogurth griego · Mix de semillas · Té"}]},
+  {d:7,s:1,img:'hotcakes avena frutos rojos',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Hot cakes de avena y frutos rojos o Avena horneada"},{tl:"Comida",tc:"co",tx:"Pescado al pastor · Ensalada fresca"},{tl:"Cena",tc:"ce",tx:"Crema de zanahoria sin lácteos · Kéfir · Té"}]},
+  {d:8,s:2,img:'huevos turcos turk yumurtasi',meals:[{tl:"Ayunas",tc:"ay",tx:"Media taza de caldo de huesos"},{tl:"Desayuno",tc:"de",tx:"Huevos turcos"},{tl:"Comida",tc:"co",tx:"Calabazas rellenas de pollo en salsa verde · Ensalada"},{tl:"Cena",tc:"ce",tx:"Crema de verduras sin lácteos"}]},
+  {d:9,s:2,img:'toast aguacate espinacas pan tostado',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Toast de espinacas"},{tl:"Comida",tc:"co",tx:"Albóndigas con verduras · Ensalada fresca"},{tl:"Cena",tc:"ce",tx:"Yogurth griego · Mix de semillas · Té"}]},
+  {d:10,s:2,img:'bowl frutos rojos frutas frescas',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Bowl abundante de frutos rojos"},{tl:"Comida",tc:"co",tx:"Ensalada de pollo · Aguacate · Tostadas"},{tl:"Cena",tc:"ce",tx:"Arroz Basmati con lentejas · Té de manzanilla"}]},
+  {d:11,s:2,img:'lasaña de calabaza vegetariana',meals:[{tl:"Ayunas",tc:"ay",tx:"Media taza de caldo de huesos"},{tl:"Desayuno",tc:"de",tx:"Dos huevos con espinacas · Nopales · Tortillas"},{tl:"Comida",tc:"co",tx:"Crema de verduras · Lasaña de calabaza"},{tl:"Cena",tc:"ce",tx:"Yogurth griego · Mix de semillas · Té"}]},
+  {d:12,s:2,img:'ensalada griega mediterranean salad',meals:[{tl:"Ayunas",tc:"ay",tx:"Media taza de caldo de huesos"},{tl:"Desayuno",tc:"de",tx:"Hot cakes de avena y frutos rojos o Avena horneada"},{tl:"Comida",tc:"co",tx:"Ensalada griega"},{tl:"Cena",tc:"ce",tx:"Crema de verduras · Té de manzanilla"}]},
+  {d:13,s:2,tag:"Día libre",img:'pizza vegetal casera saludable',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Huevos divorciados sobre nopal asado · Aguacate"},{tl:"Comida",tc:"co",tx:"Día Libre 🎉"},{tl:"Cena",tc:"ce",tx:"Pizza casera de vegetales"}]},
+  {d:14,s:2,tag:"Último día",img:'aguacate relleno ensalada pollo',meals:[{tl:"Ayunas",tc:"ay",tx:"Shot de kéfir"},{tl:"Desayuno",tc:"de",tx:"Bowl abundante de frutos rojos"},{tl:"Comida",tc:"co",tx:"Aguacate relleno de ensalada de pollo"},{tl:"Cena",tc:"ce",tx:"Yogurth griego · Mix de semillas · Té"}]}
 ];
 
-var shopData=[
-  {store:"Mercadito",cls:"m",icon:"🌿",cats:[
-    {name:"Frutas",items:["Mix de frutos rojos","Papaya","Manzana","Pera","Aguacate","Limón"]},
-    {name:"Verduras",items:["Espinacas","Jitomate cherry","Pepino persa","Calabaza","Zanahoria","Chayote","Jitomate","Cebolla morada","Mix de lechugas","Tortillas de maíz nixtamalizado"]}
+var SHOP=[
+  {store:"Mercadito",cls:"m",ico:"🌿",cats:[
+    {n:"Frutas",items:["Mix de frutos rojos","Papaya","Manzana","Pera","Aguacate","Limón"]},
+    {n:"Verduras",items:["Espinacas","Jitomate cherry","Pepino persa","Calabaza","Zanahoria","Chayote","Jitomate","Cebolla morada","Mix de lechugas","Tortillas de maíz nixtamalizado"]}
   ]},
-  {store:"Supermercado",cls:"s",icon:"🏪",cats:[
-    {name:"Proteínas",items:["Yogurth griego sin azúcar","Jocoque seco o requesón","Carne molida","Pescado","Pechuga de pollo","Huevo orgánico"]},
-    {name:"Semillas y granos",items:["Garbanzos","Lentejas","Arroz Basmati","Avena sin glutén","Chía","Mix de semillas","Frijoles","Nopales cambray"]},
-    {name:"Grasas",items:["Aceite de aguacate o coco","Aceite de olivo"]},
-    {name:"Carbohidratos",items:["Tostadas horneadas"]},
-    {name:"Fermentos y bebidas",items:["Kéfir","Bebida vegetal (coco/almendra)"]},
-    {name:"Tés",items:["Té de diente de león","Té de manzanilla"]},
-    {name:"Condimentos",items:["Sal de mar o himalaya","Canela en polvo","Vainilla","Endulzante natural","Vinagre de manzana orgánico"]},
-    {name:"Suplementos",items:["Caldo de huesos","Clorofila"]}
+  {store:"Supermercado",cls:"s",ico:"🏪",cats:[
+    {n:"Proteínas",items:["Yogurth griego sin azúcar","Jocoque seco o requesón","Carne molida","Pescado","Pechuga de pollo","Huevo orgánico"]},
+    {n:"Semillas y granos",items:["Garbanzos","Lentejas","Arroz Basmati","Avena sin glutén","Chía","Mix de semillas","Frijoles","Nopales cambray"]},
+    {n:"Grasas",items:["Aceite de aguacate o coco","Aceite de olivo"]},
+    {n:"Carbohidratos",items:["Tostadas horneadas"]},
+    {n:"Fermentos y bebidas",items:["Kéfir","Bebida vegetal (coco/almendra)"]},
+    {n:"Tés",items:["Té de diente de león","Té de manzanilla"]},
+    {n:"Condimentos",items:["Sal de mar o himalaya","Canela en polvo","Vainilla","Endulzante natural","Vinagre de manzana orgánico"]},
+    {n:"Suplementos",items:["Caldo de huesos","Clorofila"]}
   ]},
-  {store:"Panadería artesanal",cls:"p",icon:"🍞",cats:[
-    {name:"Pan fermentado",items:["Pan de masa madre"]}
-  ]}
+  {store:"Panadería artesanal",cls:"p",ico:"🍞",cats:[{n:"Pan fermentado",items:["Pan de masa madre"]}]}
 ];
 
-var phrases=["¡Empieza hoy tu transformación!","¡Buen comienzo, sigue así!","¡Vas muy bien, no te detengas!","¡Estás en racha, increíble!","¡Más de la mitad, eres imparable!","¡Casi terminas, qué orgullo!","¡Reto completado! Eres Six Power 💪"];
+var PHRASES=["¡Empieza hoy tu transformación!","¡Buen comienzo, sigue así!","¡Vas muy bien, no pares!","¡Estás en racha, increíble!","¡Más de la mitad, imparable!","¡Casi terminas, qué orgullo!","¡Reto completado! Eres Six Power 💪"];
 
-function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  if(id==='s-progreso')renderProgress();
-  if(id==='s-menu')renderMenu();
-  if(id==='s-compras')renderShop();
-  updateHome();
+var MOTIV=["Cada comida que eliges bien es un paso hacia la mejor versión de ti.","Tu cuerpo merece lo mejor. Tú mereces lo mejor.","Pequeñas acciones, grandes transformaciones.","Hoy es un buen día para cuidarte.","Estás más cerca de tu meta que ayer.","La constancia supera al talento. Sigue adelante.","Tu esfuerzo de hoy es tu salud de mañana."];
+
+// ─── STATE ───
+var DB={};var CUSER=null;var ST={meals:{},shop:{}};var imgCache={};
+
+function saveDB(){try{localStorage.setItem('sp_db',JSON.stringify(DB))}catch(e){}}
+function loadDB(){try{var d=localStorage.getItem('sp_db');if(d)DB=JSON.parse(d)}catch(e){}}
+function saveState(){if(!CUSER)return;DB[CUSER.email].state=JSON.parse(JSON.stringify(ST));saveDB()}
+function loadState(){if(!CUSER)return;var u=DB[CUSER.email];ST=u&&u.state?JSON.parse(JSON.stringify(u.state)):{meals:{},shop:{}};}
+
+// ─── AUTH ───
+function switchTab(t){
+  document.getElementById('form-login').style.display=t==='login'?'block':'none';
+  document.getElementById('form-reg').style.display=t==='reg'?'block':'none';
+  document.getElementById('tl-login').className='tl'+(t==='login'?' act':'');
+  document.getElementById('tl-reg').className='tl'+(t==='reg'?' act':'');
 }
 
-function getMealKey(d,mi){return 'd'+d+'m'+mi}
-function getShopKey(item){return 'sh_'+item.replace(/\s/g,'_')}
+var selAv='🌸';
+function pickAv(el,em){selAv=em;document.querySelectorAll('.av-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel')}
 
-function getDayStatus(d){
-  var day=menuData.find(x=>x.d===d);
-  if(!day)return'empty';
-  if(day.mono){var v=state.meals[getMealKey(d,0)];return v==='yes'?'done':v==='no'?'no':'empty'}
-  var total=day.meals.length,done=0,nope=0;
-  day.meals.forEach(function(m,i){var v=state.meals[getMealKey(d,i)];if(v==='yes')done++;else if(v==='no')nope++;});
-  if(done===total)return'done';
-  if(done>0||nope>0)return'partial';
-  return'empty';
+function doLogin(){
+  var em=document.getElementById('l-email').value.trim();
+  var pw=document.getElementById('l-pass').value;
+  document.getElementById('l-err').textContent='';
+  if(!em||!pw){document.getElementById('l-err').textContent='Completa todos los campos';return}
+  loadDB();
+  var u=DB[em];
+  if(!u){document.getElementById('l-err').textContent='Correo no registrado';return}
+  if(u.password!==btoa(pw)){document.getElementById('l-err').textContent='Contraseña incorrecta';return}
+  CUSER=u;loadState();enterApp();
 }
 
-function countDone(){return menuData.filter(d=>getDayStatus(d.d)==='done').length}
-function countPartial(){return menuData.filter(d=>getDayStatus(d.d)==='partial').length}
-function countMeals(){var n=0;Object.values(state.meals).forEach(v=>{if(v==='yes')n++});return n}
-function countShop(){return Object.values(state.shop).filter(v=>v).length}
-function totalMeals(){var n=0;menuData.forEach(d=>{n+=d.meals.length});return n}
-
-function calcPct(){
-  var mp=countMeals()/totalMeals()*70;
-  var sp=countShop()/45*30;
-  return Math.round(mp+sp);
+function doRegister(){
+  var nm=document.getElementById('r-name').value.trim();
+  var ls=document.getElementById('r-last').value.trim();
+  var em=document.getElementById('r-email').value.trim();
+  var pw=document.getElementById('r-pass').value;
+  document.getElementById('r-err').textContent='';
+  if(!nm||!em||!pw){document.getElementById('r-err').textContent='Completa todos los campos';return}
+  if(pw.length<6){document.getElementById('r-err').textContent='La contraseña debe tener al menos 6 caracteres';return}
+  loadDB();
+  if(DB[em]){document.getElementById('r-err').textContent='Este correo ya está registrado';return}
+  var u={name:nm,lastName:ls,email:em,password:btoa(pw),avatar:selAv,startDate:new Date().toLocaleDateString('es-MX'),state:{meals:{},shop:{}},notifs:{}};
+  DB[em]=u;saveDB();
+  CUSER=u;loadState();enterApp();
 }
 
-function updateHome(){
-  var pct=calcPct();
-  document.getElementById('h-dias').textContent=countDone();
-  document.getElementById('h-pct').textContent=pct+'%';
-  document.getElementById('h-items').textContent=countShop();
+function doLogout(){
+  saveState();CUSER=null;ST={meals:{},shop:{}};
+  document.getElementById('s-app').style.display='none';
+  document.getElementById('s-login').className='screen on';
+  document.getElementById('l-email').value='';document.getElementById('l-pass').value='';
+  showTab('home');
 }
 
-function renderProgress(){
-  var pct=calcPct();
-  var done=countDone(),partial=countPartial();
-  var pi=Math.min(Math.floor(pct/100*6),6);
-  document.getElementById('p-big-pct').textContent=pct+'%';
-  document.getElementById('prog-badge').textContent=pct+'%';
-  document.getElementById('p-bar').style.width=pct+'%';
-  document.getElementById('p-phrase').textContent=phrases[pi];
-  document.getElementById('ps-completos').textContent=done;
-  document.getElementById('ps-parciales').textContent=partial;
-  document.getElementById('ps-comidas').textContent=countMeals();
-  document.getElementById('ps-compras').textContent=countShop()+'/45';
+function enterApp(){
+  document.getElementById('s-login').className='screen';
+  document.getElementById('s-app').style.display='flex';
+  document.getElementById('s-app').style.flexDirection='column';
+  document.getElementById('s-app').style.minHeight='100vh';
+  updateGreet();updateProfile();buildMenu();buildShop();syncAll();showTab('home');
+  requestNotifPermission();
+  scheduleNotifs();
+}
 
-  var s1meals=0,s1done=0,s2meals=0,s2done=0;
-  menuData.forEach(function(d){
-    d.meals.forEach(function(m,i){
-      var v=state.meals[getMealKey(d.d,i)];
-      if(d.s===1){s1meals++;if(v==='yes')s1done++;}
-      else{s2meals++;if(v==='yes')s2done++;}
-    });
+// ─── GREET ───
+function updateGreet(){
+  if(!CUSER)return;
+  var h=new Date().getHours();
+  var g=h<12?'Buenos días':'h<18'?'Buenas tardes':'Buenas noches';
+  if(h>=12&&h<18)g='Buenas tardes';else if(h>=18)g='Buenas noches';
+  document.getElementById('hh-greet').textContent=g+',';
+  document.getElementById('hh-name').textContent=CUSER.name+' '+CUSER.lastName;
+  document.getElementById('hh-avatar').textContent=CUSER.avatar||'🌸';
+}
+
+// ─── TABS ───
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>{t.style.display='none'});
+  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('act'));
+  var el=document.getElementById('tab-'+id);
+  if(el){el.style.display='flex';el.style.flexDirection='column';el.style.flex='1';}
+  var bn=document.getElementById('bn-'+id);
+  if(bn)bn.classList.add('act');
+  if(id==='progress')buildProgress();
+  if(id==='home')buildToday();
+  if(id==='profile')updateProfile();
+}
+
+// ─── KEYS ───
+function mk(d,i){return'd'+d+'m'+i}
+function sk(it){return'sh_'+it.replace(/\s+/g,'_')}
+
+// ─── STATUS ───
+function dayStatus(d){
+  var day=DAYS.find(x=>x.d===d);if(!day)return'none';
+  var tot=day.meals.length,yes=0,no=0;
+  day.meals.forEach(function(m,i){var v=ST.meals[mk(d,i)];if(v==='y')yes++;else if(v==='n')no++;});
+  if(yes===tot)return'done';if(yes>0||no>0)return'part';return'none';
+}
+function cntDone(){return DAYS.filter(d=>dayStatus(d.d)==='done').length}
+function cntPart(){return DAYS.filter(d=>dayStatus(d.d)==='part').length}
+function cntMeals(){return Object.values(ST.meals).filter(v=>v==='y').length}
+function cntShop(){return Object.values(ST.shop).filter(Boolean).length}
+function totMeals(){var n=0;DAYS.forEach(d=>n+=d.meals.length);return n}
+function calcPct(){return Math.round(cntMeals()/totMeals()*70+cntShop()/45*30)}
+
+// ─── SYNC ───
+function syncAll(){
+  var p=calcPct(),d=cntDone(),sh=cntShop();
+  document.getElementById('hh-dias').textContent=d;
+  document.getElementById('hh-pct').textContent=p+'%';
+  document.getElementById('hh-shop').textContent=sh;
+  document.getElementById('qb-pct').textContent=p+'%';
+  document.getElementById('qb-shop').textContent=sh+'/45 productos';
+  document.getElementById('menu-pill').textContent=cntMeals()+' hechos';
+  document.getElementById('shop-pill').textContent=sh+'/45';
+  var sbl=document.getElementById('shop-lbl');if(sbl)sbl.textContent=sh+' de 45';
+  var sbr=document.getElementById('shop-bar');if(sbr)sbr.style.width=Math.round(sh/45*100)+'%';
+  saveState();
+}
+
+// ─── TODAY CARD ───
+function buildToday(){
+  var today=new Date();
+  var start=CUSER&&DB[CUSER.email]?DB[CUSER.email].startDate:null;
+  var dayNum=1;
+  if(start){var d1=new Date(start);var diff=Math.floor((today-d1)/(1000*60*60*24));dayNum=Math.min(Math.max(diff+1,1),14);}
+  var day=DAYS.find(d=>d.d===dayNum)||DAYS[0];
+  var card=document.getElementById('today-card');
+  var hdr='<div class="dt-header"><div><div class="dt-title">Día '+day.d+' de 14</div><div class="dt-sub">'+today.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'})+'</div></div></div>';
+  var rows='<div class="dt-meals">';
+  day.meals.forEach(function(m,i){
+    var done=ST.meals[mk(day.d,i)]==='y';
+    rows+='<div class="dt-row"><div class="dt-dot '+m.tc+'"></div><div class="dt-meal-name">'+m.tx.split('·')[0].trim()+'</div><div class="dt-status '+(done?'dts-done':'dts-none')+'">'+(done?'✓ Hecho':'Pendiente')+'</div></div>';
   });
-  var p1=s1meals?Math.round(s1done/s1meals*100):0;
-  var p2=s2meals?Math.round(s2done/s2meals*100):0;
-  document.getElementById('wp1').style.width=p1+'%';
-  document.getElementById('wp2').style.width=p2+'%';
-  document.getElementById('wp1-p').textContent=p1+'%';
-  document.getElementById('wp2-p').textContent=p2+'%';
-
-  var sr=document.getElementById('streak-row');
-  sr.innerHTML='';
-  menuData.forEach(function(d){
-    var st=getDayStatus(d.d);
-    var cls=st==='done'?(d.s===1?'done':'grn'):st==='partial'?(d.s===1?'partial':'grn-p'):'';
-    var box=document.createElement('div');
-    box.className='s-box '+cls;
-    box.textContent=d.d;
-    sr.appendChild(box);
-  });
-
-  var mini=document.getElementById('p-mini');
-  mini.innerHTML='';
-  menuData.forEach(function(d){
-    var st=getDayStatus(d.d);
-    var dot=document.createElement('div');
-    dot.className='prog-dot'+(st==='done'?' done':st==='partial'?' partial':'');
-    mini.appendChild(dot);
-  });
+  rows+='</div>';
+  card.innerHTML=hdr+rows;
 }
 
-function renderMenu(){
+// ─── IMAGE FETCH ───
+async function fetchImg(query,el){
+  if(imgCache[query]){el.src=imgCache[query];el.style.display='block';return}
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:'Find ONE real food photo URL for: '+query+'. Reply ONLY with a direct image URL (.jpg or .png), nothing else. Must be a real accessible image.'}]})});
+    var data=await res.json();
+    var txt='';
+    (data.content||[]).forEach(function(b){if(b.type==='text')txt+=b.text});
+    var match=txt.match(/https?:\/\/[^\s"<>]+\.(jpg|jpeg|png|webp)/i);
+    if(match){imgCache[query]=match[0];el.src=match[0];el.style.display='block';}
+    else{el.style.display='none';}
+  }catch(e){el.style.display='none';}
+}
+
+// ─── MENU ───
+function buildMenu(){
   var list=document.getElementById('menu-list');
-  list.innerHTML='';
-  var s1=document.createElement('div');s1.innerHTML='<div class="week-hdr"><span class="wk-pill">Semana 1</span><span class="wk-sub">Desinflamar · Días 1–7</span></div>';
-  list.appendChild(s1);
-  menuData.forEach(function(day){
-    if(day.d===8){var s2=document.createElement('div');s2.innerHTML='<div class="week-hdr"><span class="wk-pill s2">Semana 2</span><span class="wk-sub">Equilibrar y Sostener · Días 8–14</span></div>';list.appendChild(s2);}
-    var st=getDayStatus(day.d);
-    var stLabel=st==='done'?'Completado':st==='partial'?'En progreso':'Pendiente';
-    var stCls=st==='done'?'done':st==='partial'?'partial':'empty';
-    var preview=day.mono?'Mono dieta: Pera y Manzana':day.meals.find(m=>m.t==='db')?.text||'';
-    var row=document.createElement('div');row.className='day-row';
-    var numCls=day.s===2?'day-num s2':'day-num';
-    var tagHtml=day.tag?'<div style="font-size:10px;padding:2px 8px;border-radius:10px;background:#FDF6E3;color:#633806">'+day.tag+'</div>':'';
-    row.innerHTML='<div class="day-hdr" onclick="toggleDay(this,'+day.d+')"><div class="'+numCls+'">'+day.d+'</div><div class="day-info"><div class="day-name">'+day.label+'</div><div class="day-preview">'+preview.substring(0,50)+(preview.length>50?'…':'')+'</div></div><div class="day-right">'+tagHtml+'<div class="day-status '+stCls+'">'+stLabel+'</div><div class="chev">▼</div></div></div><div class="day-body" id="body-'+day.d+'"></div>';
-    list.appendChild(row);
+  if(!list||list.dataset.built)return;
+  list.dataset.built='1';
+  var addWk=function(txt,cls,sub){var h=document.createElement('div');h.className='wk-hdr';h.innerHTML='<div class="wk-pill '+cls+'">'+txt+'</div><div class="wk-sub">'+sub+'</div>';list.appendChild(h);};
+  addWk('Semana 1','','Desinflamar · Días 1–7');
+  DAYS.forEach(function(day){
+    if(day.d===8)addWk('Semana 2','g','Equilibrar · Días 8–14');
+    var st=dayStatus(day.d);
+    var stl=st==='done'?'Completado':st==='part'?'En progreso':'Pendiente';
+    var stc=st==='done'?'sp-done':st==='part'?'sp-part':'sp-none';
+    var prev=day.mono?'Mono dieta':(day.meals.find(m=>m.tc==='de')||day.meals[0]).tx;
+    var tagH=day.tag?'<div class="sp sp-part" style="font-size:10px">'+day.tag+'</div>':'';
+    var cirCls=day.s===2?'day-circ g':'day-circ';
+    var card=document.createElement('div');card.className='day-card';
+    card.innerHTML='<div class="day-hdr" onclick="toggleDay(this,'+day.d+')" id="dhdr-'+day.d+'"><div class="'+cirCls+'">'+day.d+'</div><div class="day-info"><div class="day-name">Día '+day.d+'</div><div class="day-prev">'+prev.substring(0,42)+(prev.length>42?'…':'')+'</div></div><div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'+tagH+'<div class="sp '+stc+'" id="sp-'+day.d+'">'+stl+'</div><div class="chev-icon" id="chev-'+day.d+'">›</div></div></div><div class="day-body" id="db-'+day.d+'"></div>';
+    list.appendChild(card);
   });
-  updateMenuBadge();
 }
 
 function toggleDay(hdr,dayNum){
-  var body=document.getElementById('body-'+dayNum);
-  var chev=hdr.querySelector('.chev');
-  var isOpen=body.classList.contains('open');
-  if(!isOpen){
-    buildDayBody(dayNum,body);
-    body.classList.add('open');
-    chev.style.transform='rotate(180deg)';
-  } else {
-    body.classList.remove('open');
-    chev.style.transform='';
-  }
+  var body=document.getElementById('db-'+dayNum);
+  var chev=document.getElementById('chev-'+dayNum);
+  if(!body.classList.contains('open')){fillDay(dayNum,body);body.classList.add('open');chev.style.transform='rotate(90deg)';}
+  else{body.classList.remove('open');chev.style.transform='';}
 }
 
-function buildDayBody(dayNum,body){
-  var day=menuData.find(d=>d.d===dayNum);
+function fillDay(dayNum,body){
+  var day=DAYS.find(d=>d.d===dayNum);
   body.innerHTML='';
   if(day.mono){
-    var v=state.meals[getMealKey(dayNum,0)]||'';
-    body.innerHTML='<div class="mono-msg">Todo el día: Pera y Manzana a libre demanda<br><small style="opacity:0.7">+ Agua tibia con limón al despertar</small></div><div style="padding:10px 12px"><div class="check-row"><button class="chk-btn'+(v==='yes'?' yes':'')+'" onclick="setMeal('+dayNum+',0,\'yes\',this,'+dayNum+')"><span class="chk-dot"></span>Lo hice</button><button class="chk-btn'+(v==='no'?' no':'')+'" onclick="setMeal('+dayNum+',0,\'no\',this,'+dayNum+')"><span class="chk-dot"></span>No lo hice</button></div></div>';
-    return;
+    var v=ST.meals[mk(dayNum,0)]||'';
+    var wrap=document.createElement('div');
+    wrap.innerHTML='<div class="mono-box">Todo el día: Pera y Manzana a libre demanda<br><small style="opacity:0.7">+ Agua tibia con limón al despertar</small></div><div class="meal-sec" style="border:none"><div class="btns-row"><button class="chk-btn'+(v==='y'?' yes':'')+'" onclick="setMeal('+dayNum+',0,\'y\',this)"><span class="chk-dot"></span>Lo hice</button><button class="chk-btn'+(v==='n'?' no':'')+'" onclick="setMeal('+dayNum+',0,\'n\',this)"><span class="chk-dot"></span>No lo hice</button></div></div>';
+    body.appendChild(wrap);return;
   }
+  // Hero image
+  var imgWrap=document.createElement('div');imgWrap.className='meal-img-loading';imgWrap.id='imgwrap-'+dayNum;
+  var img=document.createElement('img');img.className='meal-hero-img';img.style.display='none';img.alt=day.img;
+  img.onload=function(){imgWrap.classList.remove('meal-img-loading');imgWrap.appendChild(img);}
+  img.onerror=function(){imgWrap.style.display='none';}
+  imgWrap.appendChild(img);
+  body.appendChild(imgWrap);
+  fetchImg(day.img,img);
+
   day.meals.forEach(function(m,i){
-    var v=state.meals[getMealKey(dayNum,i)]||'';
-    var sec=document.createElement('div');
-    sec.className='meal-section';
-    sec.id='meal-sec-'+dayNum+'-'+i;
-    sec.innerHTML='<div class="meal-top"><div class="meal-tag '+m.t+'">'+m.tl+'</div><div class="meal-txt">'+m.text+'</div></div><div class="check-row"><button class="chk-btn'+(v==='yes'?' yes':'')+'" onclick="setMeal('+dayNum+','+i+',\'yes\',this,'+dayNum+')"><span class="chk-dot"></span>Lo hice</button><button class="chk-btn'+(v==='no'?' no':'')+'" onclick="setMeal('+dayNum+','+i+',\'no\',this,'+dayNum+')"><span class="chk-dot"></span>No lo hice</button></div>';
+    var v=ST.meals[mk(dayNum,i)]||'';
+    var sec=document.createElement('div');sec.className='meal-sec';sec.id='ms-'+dayNum+'-'+i;
+    sec.innerHTML='<div class="meal-tag mt-'+m.tc+'">'+m.tl+'</div><div class="meal-txt">'+m.tx+'</div><div class="btns-row"><button class="chk-btn'+(v==='y'?' yes':'')+'" onclick="setMeal('+dayNum+','+i+',\'y\',this)"><span class="chk-dot"></span>Lo hice</button><button class="chk-btn'+(v==='n'?' no':'')+'" onclick="setMeal('+dayNum+','+i+',\'n\',this)"><span class="chk-dot"></span>No lo hice</button></div>';
     body.appendChild(sec);
   });
 }
 
-function setMeal(dayNum,mealIdx,val,btn,d){
-  var key=getMealKey(dayNum,mealIdx);
-  state.meals[key]=state.meals[key]===val?null:val;
-  var sec=document.getElementById('meal-sec-'+dayNum+'-'+mealIdx)||btn.closest('.day-body');
-  var btns=btn.parentElement.querySelectorAll('.chk-btn');
-  btns.forEach(function(b){b.classList.remove('yes','no')});
-  if(state.meals[key])btn.classList.add(val);
-  updateMenuBadge();
-  updateDayStatus(dayNum);
-  updateHome();
+function setMeal(dayNum,mi,val,btn){
+  var key=mk(dayNum,mi);
+  ST.meals[key]=ST.meals[key]===val?null:val;
+  var row=btn.parentElement;
+  row.querySelectorAll('.chk-btn').forEach(b=>{b.classList.remove('yes','no')});
+  if(ST.meals[key])btn.classList.add(val==='y'?'yes':'no');
+  updateSP(dayNum);syncAll();buildToday();
 }
 
-function updateDayStatus(dayNum){
-  var st=getDayStatus(dayNum);
-  var stLabel=st==='done'?'Completado':st==='partial'?'En progreso':'Pendiente';
-  var stCls=st==='done'?'done':st==='partial'?'partial':'empty';
-  var allRows=document.querySelectorAll('.day-row');
-  allRows.forEach(function(row){
-    var hdr=row.querySelector('.day-hdr');
-    if(hdr&&hdr.getAttribute('onclick')&&hdr.getAttribute('onclick').includes(','+dayNum+')')){
-      var badge=hdr.querySelector('.day-status');
-      if(badge){badge.className='day-status '+stCls;badge.textContent=stLabel;}
-    }
+function updateSP(dayNum){
+  var st=dayStatus(dayNum);
+  var el=document.getElementById('sp-'+dayNum);
+  if(!el)return;
+  el.className='sp '+(st==='done'?'sp-done':st==='part'?'sp-part':'sp-none');
+  el.textContent=st==='done'?'Completado':st==='part'?'En progreso':'Pendiente';
+}
+
+// ─── PROGRESS ───
+function buildProgress(){
+  var p=calcPct();
+  var pi=Math.min(Math.floor(p/100*6),6);
+  ['prog-pill','prog-pct'].forEach(id=>{var e=document.getElementById(id);if(e)e.textContent=p+'%'});
+  var pb=document.getElementById('prog-bar');if(pb)pb.style.width=p+'%';
+  var pp=document.getElementById('prog-phrase');if(pp)pp.textContent=PHRASES[pi];
+  document.getElementById('ps-comp').textContent=cntDone();
+  document.getElementById('ps-parc').textContent=cntPart();
+  document.getElementById('ps-meals').textContent=cntMeals();
+  document.getElementById('ps-shop').textContent=cntShop()+'/45';
+  var m1=0,d1=0,m2=0,d2=0;
+  DAYS.forEach(function(day){day.meals.forEach(function(m,i){var v=ST.meals[mk(day.d,i)];if(day.s===1){m1++;if(v==='y')d1++;}else{m2++;if(v==='y')d2++;}});});
+  var p1=m1?Math.round(d1/m1*100):0,p2=m2?Math.round(d2/m2*100):0;
+  document.getElementById('wb1').style.width=p1+'%';document.getElementById('wb2').style.width=p2+'%';
+  document.getElementById('wb1p').textContent=p1+'%';document.getElementById('wb2p').textContent=p2+'%';
+  var mini=document.getElementById('prog-mini');mini.innerHTML='';
+  DAYS.forEach(function(d){var st=dayStatus(d.d);var dot=document.createElement('div');dot.className='m14'+(st==='done'?' done':st==='part'?' part':'');mini.appendChild(dot);});
+  ['tr-s1','tr-s2'].forEach(function(id,si){
+    var el=document.getElementById(id);el.innerHTML='';
+    DAYS.filter(d=>d.s===si+1).forEach(function(d){
+      var st=dayStatus(d.d);var cls=st==='done'?(d.s===1?'d1':'d2'):st==='part'?(d.s===1?'p1':'p2'):'';
+      var b=document.createElement('div');b.className='dbox '+cls;b.textContent=d.d;el.appendChild(b);
+    });
   });
 }
 
-function updateMenuBadge(){
-  document.getElementById('menu-badge').textContent=countMeals()+' hechos';
-}
-
-function renderShop(){
+// ─── SHOP ───
+function buildShop(){
   var list=document.getElementById('shop-list');
-  list.innerHTML='';
-  shopData.forEach(function(store){
-    var sec=document.createElement('div');
-    sec.className='shop-sec';
-    var totalItems=store.cats.reduce((a,c)=>a+c.items.length,0);
-    var gotItems=store.cats.reduce((a,c)=>a+c.items.filter(it=>state.shop[getShopKey(it)]).length,0);
-    var storePct=totalItems?Math.round(gotItems/totalItems*100):0;
-    var h='<div class="shop-hdr '+store.cls+'"><div class="shop-icon '+store.cls+'" style="font-size:16px">'+store.icon+'</div><div><div class="shop-name '+store.cls+'">'+store.store+'</div><div style="font-size:11px;color:var(--txt2)">'+gotItems+'/'+totalItems+' productos</div></div><div class="shop-cnt">'+storePct+'%</div></div>';
-    h+='<div class="shop-prog"><div class="shop-prog-f" style="width:'+storePct+'%;background:'+(store.cls==='m'?'var(--grn)':store.cls==='s'?'var(--blu)':'var(--gld-m)')+'"></div></div>';
+  if(!list)return;list.innerHTML='';
+  SHOP.forEach(function(store){
+    var tot=store.cats.reduce((a,c)=>a+c.items.length,0);
+    var got=store.cats.reduce((a,c)=>a+c.items.filter(it=>ST.shop[sk(it)]).length,0);
+    var spct=tot?Math.round(got/tot*100):0;
+    var col=store.cls==='m'?'var(--grn)':store.cls==='s'?'var(--blu)':'var(--gld-m)';
+    var blk=document.createElement('div');blk.className='store-blk';
+    var h='<div class="store-hdr sh-'+store.cls+'"><div class="sh-ico si-'+store.cls+'" style="font-size:18px">'+store.ico+'</div><div><div class="sh-name sn-'+store.cls+'">'+store.store+'</div><div style="font-size:11px;color:var(--txt2)">'+got+'/'+tot+' productos</div></div><div class="sh-cnt">'+spct+'%</div></div><div class="sh-bar"><div class="sh-bar-f" style="width:'+spct+'%;background:'+col+'"></div></div>';
     store.cats.forEach(function(cat){
-      h+='<div class="cat-lbl">'+cat.name+'</div><div class="chips">';
-      cat.items.forEach(function(item){
-        var k=getShopKey(item);
-        var got=state.shop[k]?'got':'';
-        h+='<div class="chip '+got+'" onclick="toggleShop(\''+k+'\',this)"><span class="chip-dot"></span>'+item+'</div>';
-      });
+      h+='<div class="cat-lbl">'+cat.n+'</div><div class="chips">';
+      cat.items.forEach(function(item){var k=sk(item);h+='<div class="chip'+(ST.shop[k]?' got':'')+'" onclick="toggleChip(\''+k+'\',this)"><span class="chip-dot"></span>'+item+'</div>';});
       h+='</div>';
     });
-    sec.innerHTML=h;
-    list.appendChild(sec);
+    blk.innerHTML=h;list.appendChild(blk);
   });
-  updateShopProgress();
+  syncShopBar();
 }
 
-function toggleShop(key,chip){
-  state.shop[key]=!state.shop[key];
-  chip.classList.toggle('got',state.shop[key]);
-  updateShopProgress();
-  updateHome();
+function toggleChip(key,chip){
+  ST.shop[key]=!ST.shop[key];
+  chip.classList.toggle('got',ST.shop[key]);
+  syncShopBar();syncAll();
 }
 
-function updateShopProgress(){
-  var n=countShop();
-  var pct=Math.round(n/45*100);
-  document.getElementById('shop-fill').style.width=pct+'%';
-  document.getElementById('shop-lbl').textContent=n+' de 45 productos';
-  document.getElementById('shop-badge').textContent=n+'/45';
+function syncShopBar(){
+  var n=cntShop(),p=Math.round(n/45*100);
+  var el=document.getElementById('shop-bar');if(el)el.style.width=p+'%';
+  var ll=document.getElementById('shop-lbl');if(ll)ll.textContent=n+' de 45';
+  document.getElementById('shop-pill').textContent=n+'/45';
 }
 
-function resetShop(){
-  state.shop={};
-  renderShop();
-  updateHome();
+function resetShop(){ST.shop={};buildShop();syncAll();showToast('Lista reiniciada');}
+
+// ─── NOTIFS ───
+function requestNotifPermission(){
+  if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();
 }
 
-updateHome();
+function toggleNotif(key){
+  var cb=document.getElementById('nt-'+key);
+  var body=document.getElementById('nb-'+key);
+  if(body)body.style.display=cb.checked?'block':'none';
+  updateNotifPreview();
+}
+
+function saveNotif(key){
+  if(!CUSER)return;
+  var times={};
+  if(key==='meals'){times={breakfast:document.getElementById('nt-breakfast').value,lunch:document.getElementById('nt-lunch').value,dinner:document.getElementById('nt-dinner').value};}
+  else if(key==='motiv'){times={time:document.getElementById('nt-motiv-time').value};}
+  else if(key==='summary'){times={time:document.getElementById('nt-summary-time').value};}
+  DB[CUSER.email].notifs=DB[CUSER.email].notifs||{};
+  DB[CUSER.email].notifs[key]=times;
+  saveDB();scheduleNotifs();
+  updateNotifPreview();
+  showToast('Recordatorio guardado ✓');
+}
+
+function updateNotifPreview(){
+  var keys=['meals','motiv','summary'];
+  keys.forEach(function(k){
+    var on=document.getElementById('nt-'+k)?.checked;
+    var el=document.getElementById('prev-status-'+k);
+    if(el){el.textContent=on?'Activo':'Apagado';el.className='np-status'+(on?'':' off');}
+  });
+  var bt=document.getElementById('nt-breakfast');if(bt){var el=document.getElementById('prev-breakfast');if(el)el.textContent=bt.value+' · Hora del desayuno';}
+  var mt=document.getElementById('nt-motiv-time');if(mt){var el2=document.getElementById('prev-motiv');if(el2)el2.textContent=mt.value+' · Mensaje motivacional';}
+  var st=document.getElementById('nt-summary-time');if(st){var el3=document.getElementById('prev-summary');if(el3)el3.textContent=st.value+' · Resumen del día';}
+}
+
+function scheduleNotifs(){
+  if(!CUSER||!('Notification' in window)||Notification.permission!=='granted')return;
+  var notifs=DB[CUSER.email]?.notifs||{};
+  var now=new Date();
+  function fireAt(h,m,title,body){
+    var target=new Date();target.setHours(h,m,0,0);
+    if(target<=now)target.setDate(target.getDate()+1);
+    var ms=target-now;
+    if(ms>0&&ms<86400000)setTimeout(function(){new Notification(title,{body:body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>'})},ms);
+  }
+  if(notifs.meals&&document.getElementById('nt-meals')?.checked){
+    var t=notifs.meals;
+    if(t.breakfast){var p=t.breakfast.split(':');fireAt(+p[0],+p[1],'🍳 ¡Hora del desayuno!','Recuerda tu desayuno del reto Six Power');}
+    if(t.lunch){var p2=t.lunch.split(':');fireAt(+p2[0],+p2[1],'☀️ ¡Hora de comer!','Tu comida del reto te espera');}
+    if(t.dinner){var p3=t.dinner.split(':');fireAt(+p3[0],+p3[1],'🌙 ¡Hora de cenar!','Cierra el día con tu cena saludable');}
+  }
+  if(notifs.motiv&&document.getElementById('nt-motiv')?.checked){
+    var t2=notifs.motiv;if(t2.time){var p4=t2.time.split(':');var msg=MOTIV[new Date().getDay()%MOTIV.length];fireAt(+p4[0],+p4[1],'💪 Six Power',msg);}
+  }
+  if(notifs.summary&&document.getElementById('nt-summary')?.checked){
+    var t3=notifs.summary;if(t3.time){var p5=t3.time.split(':');var done=cntDone();fireAt(+p5[0],+p5[1],'📋 Tu resumen de hoy','Has completado '+done+' días del reto. ¡Sigue adelante!');}
+  }
+}
+
+// ─── PROFILE ───
+function updateProfile(){
+  if(!CUSER)return;
+  document.getElementById('prof-avatar').textContent=CUSER.avatar||'🌸';
+  document.getElementById('prof-name').textContent=CUSER.name+' '+CUSER.lastName;
+  document.getElementById('prof-email').textContent=CUSER.email;
+  document.getElementById('prof-start').textContent=CUSER.startDate||'—';
+  document.getElementById('prof-days').textContent=cntDone();
+  document.getElementById('prof-meals').textContent=cntMeals();
+  document.getElementById('prof-pct').textContent=calcPct()+'%';
+}
+
+// ─── TOAST ───
+function showToast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2200);
+}
+
+// ─── INIT ───
+loadDB();
+var saved=null;try{saved=localStorage.getItem('sp_session')}catch(e){}
+if(saved){try{CUSER=JSON.parse(saved);if(!DB[CUSER.email]){CUSER=null;}else{CUSER=DB[CUSER.email];loadState();enterApp();}}catch(e){CUSER=null;}}
+
+window.addEventListener('beforeunload',function(){if(CUSER)try{localStorage.setItem('sp_session',JSON.stringify(CUSER))}catch(e){}});
+window.addEventListener('pagehide',function(){if(CUSER)try{localStorage.setItem('sp_session',JSON.stringify(CUSER))}catch(e){}});
 </script>
+</body>
+</html>
