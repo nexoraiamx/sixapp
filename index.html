@@ -466,36 +466,28 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);c
   <div class="tab-pane" id="tp-notifs">
     <div class="tbar"><div style="width:60px"></div><div class="tbar-t">Recordatorios</div></div>
     <div class="notif-scroll">
-      <div class="info-box ib-blu"><div class="ib-ico">🔔</div><div><div class="ib-t">Notificaciones del navegador</div><div class="ib-b">Activa los interruptores y guarda los horarios. El navegador te pedirá permiso la primera vez.</div></div></div>
+      <div class="info-box ib-blu"><div class="ib-ico">📅</div><div><div class="ib-t">Añadir al Calendario</div><div class="ib-b">Elige tus horarios y presiona "Descargar" para guardar los 14 días de recordatorios en el calendario de tu celular.</div></div></div>
       <div class="nc">
-        <div class="nc-hdr"><div class="nc-ico" style="background:#FDF6E3">🍳</div><div class="nc-inf"><div class="nc-t">Comidas del día</div><div class="nc-s">Desayuno, comida y cena</div></div><label class="tog"><input type="checkbox" id="nt-meals" onchange="togNotif('meals')"><div class="tog-track"><div class="tog-thumb"></div></div></label></div>
-        <div class="nc-body" id="nb-meals">
+        <div class="nc-hdr" style="border-bottom:.5px solid var(--brd);border-radius:16px 16px 0 0"><div class="nc-ico" style="background:#FDF6E3">🍳</div><div class="nc-inf"><div class="nc-t">Comidas del día</div><div class="nc-s">Desayuno, comida y cena</div></div></div>
+        <div class="nc-body on" id="nb-meals" style="margin-top:14px">
           <div class="t-row"><div class="t-lbl">🌅 Desayuno</div><input class="t-inp" type="time" id="nt-bf" value="08:00"></div>
           <div class="t-row"><div class="t-lbl">☀️ Comida</div><input class="t-inp" type="time" id="nt-lu" value="14:00"></div>
           <div class="t-row"><div class="t-lbl">🌙 Cena</div><input class="t-inp" type="time" id="nt-di" value="20:00"></div>
-          <button class="save-btn" onclick="saveNotif('meals')">Guardar horarios</button>
         </div>
       </div>
       <div class="nc">
-        <div class="nc-hdr"><div class="nc-ico" style="background:var(--mag-p)">💪</div><div class="nc-inf"><div class="nc-t">Motivación diaria</div><div class="nc-s">Mensaje inspiracional</div></div><label class="tog"><input type="checkbox" id="nt-motiv" onchange="togNotif('motiv')"><div class="tog-track"><div class="tog-thumb"></div></div></label></div>
-        <div class="nc-body" id="nb-motiv">
+        <div class="nc-hdr" style="border-bottom:.5px solid var(--brd);border-radius:16px 16px 0 0"><div class="nc-ico" style="background:var(--mag-p)">💪</div><div class="nc-inf"><div class="nc-t">Motivación diaria</div><div class="nc-s">Mensaje inspiracional</div></div></div>
+        <div class="nc-body on" id="nb-motiv" style="margin-top:14px">
           <div class="t-row"><div class="t-lbl">🌄 Hora</div><input class="t-inp" type="time" id="nt-mt" value="07:00"></div>
-          <button class="save-btn" onclick="saveNotif('motiv')">Guardar</button>
         </div>
       </div>
       <div class="nc">
-        <div class="nc-hdr"><div class="nc-ico" style="background:var(--grn-p)">📋</div><div class="nc-inf"><div class="nc-t">Resumen nocturno</div><div class="nc-s">Revisión de tu avance</div></div><label class="tog"><input type="checkbox" id="nt-sum" onchange="togNotif('sum')"><div class="tog-track"><div class="tog-thumb"></div></div></label></div>
-        <div class="nc-body" id="nb-sum">
+        <div class="nc-hdr" style="border-bottom:.5px solid var(--brd);border-radius:16px 16px 0 0"><div class="nc-ico" style="background:var(--grn-p)">📋</div><div class="nc-inf"><div class="nc-t">Resumen nocturno</div><div class="nc-s">Revisión de tu avance</div></div></div>
+        <div class="nc-body on" id="nb-sum" style="margin-top:14px">
           <div class="t-row"><div class="t-lbl">🌛 Hora</div><input class="t-inp" type="time" id="nt-st" value="21:30"></div>
-          <button class="save-btn" onclick="saveNotif('sum')">Guardar</button>
         </div>
       </div>
-      <div class="prev-card">
-        <div class="pv-t">Vista previa</div>
-        <div class="pv-row"><div class="pv-ico">🍳</div><div class="pv-inf"><div class="pv-t2">¡Hora del desayuno!</div><div class="pv-s" id="pv-bf">08:00 · Comida del reto</div></div><div class="pv-st off" id="pvs-meals">Apagado</div></div>
-        <div class="pv-row"><div class="pv-ico">💪</div><div class="pv-inf"><div class="pv-t2">Motivación Six Power</div><div class="pv-s" id="pv-mt">07:00 · Mensaje del día</div></div><div class="pv-st off" id="pvs-motiv">Apagado</div></div>
-        <div class="pv-row"><div class="pv-ico">📋</div><div class="pv-inf"><div class="pv-t2">Tu resumen de hoy</div><div class="pv-s" id="pv-st">21:30 · Revisión nocturna</div></div><div class="pv-st off" id="pvs-sum">Apagado</div></div>
-      </div>
+      <button class="btn-mag" style="margin-top:4px" onclick="exportCalendar()">📅 Descargar Calendario (14 Días)</button>
     </div>
   </div>
 
@@ -804,7 +796,7 @@ function enterApp(){
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
   document.getElementById('s-app').classList.add('on');
   updateGreet();buildMenu();buildShop();syncAll();buildToday();showTab('home');
-  reqNotifPerm();scheduleNotifs();
+  // Calendar notifications managed in UI
 }
 
 function enterAdmin(){
@@ -1031,48 +1023,61 @@ async function resetShop(){
 }
 
 // ═══ NOTIFS ═══
-function reqNotifPerm(){if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();}
-function togNotif(k){
-  var cb=document.getElementById('nt-'+k);
-  var bd=document.getElementById('nb-'+k);
-  if(bd)bd.classList.toggle('on',cb.checked);
-  updPrev();
-}
-function saveNotif(k){
-  var cfg={};
-  if(k==='meals'){cfg={bf:document.getElementById('nt-bf').value,lu:document.getElementById('nt-lu').value,di:document.getElementById('nt-di').value};}
-  else if(k==='motiv')cfg={t:document.getElementById('nt-mt').value};
-  else cfg={t:document.getElementById('nt-st').value};
-  try{var n=JSON.parse(localStorage.getItem('sp_notif')||'{}');n[k]=cfg;localStorage.setItem('sp_notif',JSON.stringify(n));}catch(e){}
-  scheduleNotifs();updPrev();showToast('Recordatorio guardado ✓');
-}
-function updPrev(){
-  ['meals','motiv','sum'].forEach(function(k){
-    var on=document.getElementById('nt-'+k)?.checked;
-    var el=document.getElementById('pvs-'+k);
-    if(el){el.textContent=on?'Activo':'Apagado';el.className='pv-st'+(on?'':' off');}
+function exportCalendar() {
+  var bf = document.getElementById('nt-bf').value;
+  var lu = document.getElementById('nt-lu').value;
+  var di = document.getElementById('nt-di').value;
+  var mt = document.getElementById('nt-mt').value;
+  var st = document.getElementById('nt-st').value;
+
+  var sd = new Date();
+  sd.setDate(sd.getDate() + 1);
+
+  var df = function(d, timeStr) {
+    var pts = timeStr.split(':');
+    var nd = new Date(d);
+    nd.setHours(parseInt(pts[0]), parseInt(pts[1]), 0, 0);
+    return nd.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+
+  var evs = [
+    {t: 'Motivación Six Power', time: mt, d: 0},
+    {t: 'Desayuno Six Power', time: bf, d: 30},
+    {t: 'Comida Six Power', time: lu, d: 30},
+    {t: 'Cena Six Power', time: di, d: 30},
+    {t: 'Resumen Nocturno', time: st, d: 15}
+  ];
+
+  var ics = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//SixPower//Reto14Dias//ES\n";
+  
+  evs.forEach(function(e, i) {
+    var dtStart = df(sd, e.time);
+    var endD = new Date(sd);
+    var pts = e.time.split(':');
+    endD.setHours(parseInt(pts[0]), parseInt(pts[1]), 0, 0);
+    endD.setMinutes(endD.getMinutes() + e.d);
+    var dtEnd = endD.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    
+    ics += "BEGIN:VEVENT\n";
+    ics += "UID:sp-" + i + "-" + Date.now() + "\n";
+    ics += "SUMMARY:" + e.t + "\n";
+    ics += "DTSTART:" + dtStart + "\n";
+    ics += "DTEND:" + dtEnd + "\n";
+    ics += "RRULE:FREQ=DAILY;COUNT=14\n";
+    ics += "END:VEVENT\n";
   });
-  var bf=document.getElementById('nt-bf');if(bf){var e=document.getElementById('pv-bf');if(e)e.textContent=bf.value+' · Hora del desayuno';}
-  var mt=document.getElementById('nt-mt');if(mt){var e2=document.getElementById('pv-mt');if(e2)e2.textContent=mt.value+' · Mensaje motivacional';}
-  var st=document.getElementById('nt-st');if(st){var e3=document.getElementById('pv-st');if(e3)e3.textContent=st.value+' · Revisión nocturna';}
-}
-function scheduleNotifs(){
-  if(!('Notification' in window)||Notification.permission!=='granted')return;
-  var now=new Date();
-  function fireAt(h,m,title,body){
-    var t=new Date();t.setHours(h,m,0,0);if(t<=now)t.setDate(t.getDate()+1);
-    var ms=t-now;if(ms>0&&ms<864e5)setTimeout(()=>new Notification(title,{body:body,icon:''}),ms);
-  }
-  try{
-    var n=JSON.parse(localStorage.getItem('sp_notif')||'{}');
-    if(n.meals&&document.getElementById('nt-meals')?.checked){
-      var p=n.meals.bf.split(':');fireAt(+p[0],+p[1],'🍳 ¡Hora del desayuno!','Tu desayuno del reto te espera');
-      var p2=n.meals.lu.split(':');fireAt(+p2[0],+p2[1],'☀️ ¡Hora de comer!','Tu comida saludable te espera');
-      var p3=n.meals.di.split(':');fireAt(+p3[0],+p3[1],'🌙 ¡Hora de cenar!','Cierra el día con tu cena Six Power');
-    }
-    if(n.motiv&&document.getElementById('nt-motiv')?.checked){var p4=n.motiv.t.split(':');fireAt(+p4[0],+p4[1],'💪 Six Power',MOTIV[new Date().getDay()%MOTIV.length]);}
-    if(n.sum&&document.getElementById('nt-sum')?.checked){var p5=n.sum.t.split(':');fireAt(+p5[0],+p5[1],'📋 Tu resumen','Días completos: '+cntDone()+' · Comidas: '+cntMeals());}
-  }catch(e){}
+  
+  ics += "END:VCALENDAR";
+
+  var blob = new Blob([ics], {type: 'text/calendar'});
+  var link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = 'reto_six_power_14_dias.ics';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  showToast('Calendario descargado ✓');
 }
 
 // ═══ PROFILE ═══
