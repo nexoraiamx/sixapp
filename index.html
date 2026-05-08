@@ -9,6 +9,12 @@
 <title>Reto Desintoxicación · Six Power</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("jglSL4sFvlEuzmfAm");
+  })();
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -744,7 +750,23 @@ async function doRegister(){
     var existing=await sbGet('users','email=eq.'+encodeURIComponent(em)+'&select=id');
     if(existing&&existing.length){document.getElementById('ru-err').textContent='Correo ya registrado';return}
     var res=await sbPost('users',{email:em,password:btoa(pw),name:nm,last_name:ln,avatar:selAv,start_date:new Date().toISOString().split('T')[0],is_admin:false});
-    if(res&&res.length){CU=res[0];try{localStorage.setItem('sp_uid',CU.id);localStorage.setItem('sp_em',CU.email);}catch(e){}ST={meals:{},shop:{}};enterApp();}
+    if(res&&res.length){
+      CU=res[0];
+      try{localStorage.setItem('sp_uid',CU.id);localStorage.setItem('sp_em',CU.email);}catch(e){}
+      ST={meals:{},shop:{}};
+      
+      try {
+        emailjs.send("service_epfth4g", "template_df5ppsq", {
+          to_email: em,
+          to_name: nm + ' ' + ln,
+          user_email: em,
+          user_name: nm + ' ' + ln,
+          message: "Se ha registrado un nuevo usuario en Six Power."
+        });
+      } catch(emailErr) { console.error("Error emailjs:", emailErr); }
+      
+      enterApp();
+    }
     else{document.getElementById('ru-err').textContent='Error al crear cuenta';}
   }catch(e){document.getElementById('ru-err').textContent='Error de conexión.';}
 }
